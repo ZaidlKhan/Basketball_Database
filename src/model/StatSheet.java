@@ -11,8 +11,8 @@ public class StatSheet {
     private final int home_steals;
     private final int away_steals;
 
-    StatSheet(int statsheet_id, int home_points, int away_points, int home_rebounds, int away_rebounds,
-              int home_assits, int away_assits, int home_steals, int away_steals) {
+    public StatSheet(int statsheet_id, int home_points, int away_points, int home_rebounds, int away_rebounds,
+                     int home_assits, int away_assits, int home_steals, int away_steals) {
         this.statsheet_id = statsheet_id;
         this.home_points = home_points;
         this.away_points = away_points;

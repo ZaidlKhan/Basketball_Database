@@ -12,7 +12,7 @@ public class Team {
     private final ArrayList<TeamMember> team_members;
     private final ArrayList<Game> games;
 
-    Team(String name, String city, String arena, int team_id, Owner owner) {
+    public Team(String name, String city, String arena, int team_id, Owner owner) {
         this.name = name;
         this.city = city;
         this.areana = arena;
@@ -53,5 +53,17 @@ public class Team {
 
     public ArrayList<Sponsor> getSponsers() {
         return sponsers;
+    }
+
+    public void addTeam_member(TeamMember teamMember) {
+        this.team_members.add(teamMember);
+    }
+
+    public void add_game(Game game) {
+        this.games.add(game);
+    }
+
+    public void add_sponsor(Sponsor sponsor) {
+        this.sponsers.add(sponsor);
     }
 }

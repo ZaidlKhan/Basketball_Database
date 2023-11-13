@@ -1,30 +1,31 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Season {
-    private Date year;          //key
-    private Date start_date;
-    private Date end_date;
+    private int year;          //key
+    private String start_date;
+    private String end_date;
     private ArrayList<Game> games;
 
-    public Season(Date year, Date start_date, Date end_date) {
+    public Season(int year, String start_date, String end_date) {
         this.year = year;
         this.start_date = start_date;
         this.end_date = end_date;
         this.games = new ArrayList<>();
     }
 
-    public Date getYear() {
+    public int getYear() {
         return year;
     }
 
-    public Date getStart_date() {
+    public String getStart_date() {
         return start_date;
     }
 
-    public Date getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
 
@@ -34,5 +35,14 @@ public class Season {
 
     public void add_games(Game game){
         this.games.add(game);
+    }
+
+    public Set<Team> getTeams() {
+        Set<Team> teams = new HashSet<>();
+        for (Game game : games) {
+            teams.add(game.getHome_team());
+            teams.add(game.getAway_team());
+        }
+        return teams;
     }
 }

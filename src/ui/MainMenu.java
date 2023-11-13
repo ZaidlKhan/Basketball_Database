@@ -50,13 +50,13 @@ public class MainMenu extends JFrame{
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        String start = String.valueOf(season.getStart_date());
-        buttonPanel.add(new JLabel("Start Date" + start), gridBagConstraints);
+        String start = String.format(season.getStart_date());
+        buttonPanel.add(new JLabel("Start Date: " + start), gridBagConstraints);
 
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        String end = String.valueOf(season.getStart_date().toString());
-        buttonPanel.add(new JLabel("Start Date" + end), gridBagConstraints);
+        String end = String.valueOf(season.getStart_date());
+        buttonPanel.add(new JLabel("End Date: " + end), gridBagConstraints);
 
         return buttonPanel;
     }
@@ -65,6 +65,7 @@ public class MainMenu extends JFrame{
         JButton gameButton = new JButton("View Game Info");
         gameButton.setPreferredSize(new Dimension(150, 50));
         gameButton.addActionListener(e -> {
+            this.dispose();
             new GameInfo(season);
         });
         return gameButton;
@@ -74,7 +75,8 @@ public class MainMenu extends JFrame{
         JButton teamButton = new JButton("View Team Info");
         teamButton.setPreferredSize(new Dimension(150, 50));
         teamButton.addActionListener(e -> {
-            System.out.println("open team tab");
+            this.dispose();
+            new TeamInfo(season);
         });
         return teamButton;
     }
@@ -83,7 +85,8 @@ public class MainMenu extends JFrame{
         JButton playerButton = new JButton("View Player Info");
         playerButton.setPreferredSize(new Dimension(150, 50));
         playerButton.addActionListener(e -> {
-            System.out.println("open player info");
+            this.dispose();
+            new TeamMemberInfo(season);
 
         });
         return playerButton;

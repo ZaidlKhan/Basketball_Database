@@ -4,7 +4,7 @@ public class Sponsor {
     private final String name;
     private final int contributions;
 
-    Sponsor(String name, int contributions) {
+    public Sponsor(String name, int contributions) {
         this.name = name;
         this.contributions = contributions;
     }

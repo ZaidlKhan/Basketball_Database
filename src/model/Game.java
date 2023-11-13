@@ -1,16 +1,14 @@
 package model;
 
-import java.util.Date;
-
 public class Game {
     private final int game_id;
-    private final Date date;
+    private final String date;
     private final Team home_team;
     private final Team away_team;
     private final Referee referee;
     private final StatSheet statSheet;
 
-    Game(int game_id, Date date, Team home_team, Team away_team, Referee referee, StatSheet statSheet) {
+    public Game(int game_id, String date, Team home_team, Team away_team, Referee referee, StatSheet statSheet) {
         this.game_id = game_id;
         this.date = date;
         this.home_team = home_team;
@@ -23,7 +21,7 @@ public class Game {
         return game_id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 

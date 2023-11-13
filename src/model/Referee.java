@@ -5,7 +5,7 @@ public class Referee {
     private final String name;
     private final int years_exprience;
 
-    Referee(int ref_id, String name, int years_exprience) {
+    public Referee(int ref_id, String name, int years_exprience) {
         this.ref_id = ref_id;
         this.name = name;
         this.years_exprience = years_exprience;
