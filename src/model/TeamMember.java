@@ -3,11 +3,11 @@ package model;
 public class TeamMember {
     private final int player_id;
     private final String name;
-    private final Team team;
-    private final int age;
-    private final String start_date;
-    private final String end_date;
-    private final int salary;
+    private Team team;
+    private int age;
+    private String start_date;
+    private String end_date;
+    private int salary;
 
     TeamMember(int player_id, String name, Team team, int age, String start_date,
                String end_date, int salary) {
@@ -48,4 +48,23 @@ public class TeamMember {
         return salary;
     }
 
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
+    public void setStartDate(String startDate) {
+        this.start_date = startDate;
+    }
+
+    public void setEndDate(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
 }

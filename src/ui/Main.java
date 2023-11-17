@@ -6,6 +6,8 @@ import model.*;
 public class Main {
 
     public static void main(String[] args) {
+
+        // Data from Database
         Season season = new Season(2023, "2023/10/24", "2024/04/18");
 
         Team toronto_raptors = new Team("Toronto Raptors", "Toronto", "Scotiabank Arena", 18,

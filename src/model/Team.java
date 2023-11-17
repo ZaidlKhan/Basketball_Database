@@ -66,4 +66,8 @@ public class Team {
     public void add_sponsor(Sponsor sponsor) {
         this.sponsers.add(sponsor);
     }
+
+    public void removeTeam_member(TeamMember teamMember) {
+        this.team_members.remove(teamMember);
+    }
 }
