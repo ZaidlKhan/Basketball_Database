@@ -3,6 +3,24 @@
 --
 --	This file will create the tables for use.
 --
+
+drop table Team;
+drop table TeamMember;
+drop table Player;
+drop table Age;
+drop table Location;
+drop table Coach;
+drop table Season;
+drop table Owner;
+drop table Sponsor;
+drop table HasPlayed;
+drop table Referee;
+drop table StatSheet;
+drop table Game;
+drop table Owns;
+drop table Sponsors;
+
+
 CREATE TABLE Team (
  tid INT PRIMARY KEY,
  name CHAR(20) NOT NULL,
@@ -20,7 +38,8 @@ CREATE TABLE TeamMember (
  salary INT NOT NULL,
  dob DATE NOT NULL,
  age INT,
- FOREIGN KEY (tid) REFERENCES Team(tid) ON DELETE CASCADE
+ FOREIGN KEY (tid) REFERENCES Team(tid) ON DELETE CASCADE,
+ FOREIGN KEY (age) REFERENCES Age(age) ON DELETE CASCADE
 );
 
 CREATE TABLE Player (
@@ -78,28 +97,32 @@ CREATE TABLE Referee (
 
 CREATE TABLE StatSheet (
  ssid INT PRIMARY KEY,
- home-points INT DEFAULT 0,
- away-points INT DEFAULT 0,
- steals INT DEFAULT 0,
- assists INT DEFAULT 0,
- rebounds INT DEFAULT 0
+ home_points INT DEFAULT 0,
+ away_points INT DEFAULT 0,
+ home_steals INT DEFAULT 0,
+ away_steals INT DEFAULT 0
+ home_assists INT DEFAULT 0,
+ away_assists INT DEFAULT 0,
+ home_rebounds INT DEFAULT 0,
+ away_rebounds INT DEFAULT 0
 );
 
 CREATE TABLE Game (
- date date,
+ game_date date,
  home_tid INT,
  away_tid INT,
  score CHAR(10),
- ssid INT NOT NULL,
- year INT NOT NULL,
- rid INT NOT NULL,
- arena INT NOT NULL,
- PRIMARY KEY (date, home_tid, away_tid),
- FOREIGN KEY (home_tid) REFERENCES HasPlayed(home_tid),
- FOREIGN KEY (away_tid) REFERENCES HasPlayed(away_tid),
+ ssid INT,
+ year INT,
+ rid INT,
+ arena CHAR(20),
+ PRIMARY KEY (game_date, home_tid, away_tid),
+ FOREIGN KEY (home_tid) REFERENCES Team(tid),
+ FOREIGN KEY (away_tid) REFERENCES Team(tid),
  FOREIGN KEY (ssid) REFERENCES StatSheet(ssid),
  FOREIGN KEY (year) REFERENCES Season(year),
- FOREIGN KEY (rid) REFERENCES Referee(rid)
+ FOREIGN KEY (rid) REFERENCES Referee(rid),
+ FOREIGN KEY (arena) REFERENCES Location(arena),
 );
 
 
