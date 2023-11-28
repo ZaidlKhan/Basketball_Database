@@ -1,3 +1,12 @@
+--
+-- 	Database Table Insert statements
+--
+--	This file only contains drop statements to be run before initializing the database.
+--
+--
+--
+
+
 drop table Game;
 drop table Coach;
 drop table Player;
