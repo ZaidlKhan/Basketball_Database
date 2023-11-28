@@ -9,8 +9,8 @@ public class TeamMember {
     private String end_date;
     private int salary;
 
-    TeamMember(int player_id, String name, Team team, int age, String start_date,
-               String end_date, int salary) {
+    public TeamMember(int player_id, String name, Team team, int age, String start_date,
+                      String end_date, int salary) {
         this.player_id = player_id;
         this.name = name;
         this.team = team;

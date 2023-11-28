@@ -3,12 +3,12 @@ package model;
 public class Owner {
     private String name;
     private int net_worth;
-    private String dob;
+    private int age;
 
-    public Owner(String name, int net_worth, String dob) {
+    public Owner(String name, int age, int net_worth) {
         this.name = name;
         this.net_worth = net_worth;
-        this.dob = dob;
+        this.age = age;
     }
 
     public String getName(){
@@ -19,7 +19,7 @@ public class Owner {
         return net_worth;
     }
 
-    public String getDob(){
-        return dob;
+    public int getAge(){
+        return age;
     }
 }
