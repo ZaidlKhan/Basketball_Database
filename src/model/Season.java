@@ -29,6 +29,11 @@ public class Season {
         return end_date;
     }
 
+    public String toString() {
+        String x = "Year: " + this.getYear() + "   ||   " + "Start: " + this.getStart_date() + "   ||   " + "End: " + this.getEnd_date();
+        return x;
+    }
+
     public ArrayList<Game> getGames() {
         return games;
     }

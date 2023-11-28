@@ -69,6 +69,6 @@ public class Main {
         houston_rockets.add_game(game1);
         season.add_games(game1);
 
-        new MainMenu(season);
+        new LoginScreen();
     }
 }

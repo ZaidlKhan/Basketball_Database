@@ -5,12 +5,12 @@ import model.Season;
 import javax.swing.*;
 import java.awt.*;
 
-public class MainMenu extends JFrame{
+public class MainMenu extends JFrame {
 
     private Season season;
 
     public MainMenu(Season season) {
-        setSize(700, 550);
+        setSize(800, 600);
         setTitle("BASKETBALL DATABASE");
         setLocationRelativeTo(null);
 
@@ -75,7 +75,6 @@ public class MainMenu extends JFrame{
         JButton gameButton = new JButton("View Game Info");
         gameButton.setPreferredSize(new Dimension(150, 50));
         gameButton.addActionListener(e -> {
-            this.dispose();
             new GameInfo(season);
         });
         return gameButton;
@@ -85,7 +84,6 @@ public class MainMenu extends JFrame{
         JButton teamButton = new JButton("View Team Info");
         teamButton.setPreferredSize(new Dimension(150, 50));
         teamButton.addActionListener(e -> {
-            this.dispose();
             new TeamInfo(season);
         });
         return teamButton;
@@ -95,7 +93,6 @@ public class MainMenu extends JFrame{
         JButton playerButton = new JButton("View Player Info");
         playerButton.setPreferredSize(new Dimension(150, 50));
         playerButton.addActionListener(e -> {
-            this.dispose();
             new TeamMemberInfo(season);
 
         });

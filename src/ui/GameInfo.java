@@ -24,7 +24,6 @@ public class GameInfo extends JFrame {
 
         backButton.addActionListener(e -> {
             this.dispose();
-            new MainMenu(season);
         });
 
         getContentPane().add(backButtonPanel, BorderLayout.NORTH);

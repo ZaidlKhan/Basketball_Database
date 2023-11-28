@@ -21,7 +21,6 @@ public class TeamMemberInfo extends JFrame {
 
         backButton.addActionListener(e -> {
             this.dispose();
-            new MainMenu(season);
         });
 
         JButton addButton = new JButton("Add Player");
