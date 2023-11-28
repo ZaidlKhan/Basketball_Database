@@ -1,166 +1,8 @@
---
--- 	Database Table Creation
---
---	This file will create the tables for use.
---
-
-drop table Game;
-drop table Coach;
-drop table Player;
-drop table TeamMember;
-drop table Owns;
-drop table Sponsors;
-drop table HasPlayed;
-drop table Team;
-drop table Owner;
-drop table Age;
-drop table Location;
-drop table Season;
-drop table Sponsor;
-drop table Referee;
-drop table StatSheet;
-
-
-
-CREATE TABLE Location (
- arena CHAR(20) PRIMARY KEY,
- city CHAR(20) NOT NULL
-);
-
--- removed city, added foreign key ref to Location
-CREATE TABLE Team (
- tid INT PRIMARY KEY,
- name CHAR(20) NOT NULL,
- arena CHAR(20) NOT NULL,
- FOREIGN KEY (arena) REFERENCES Location(arena)
-);
-
--- changed primary key to age
-CREATE TABLE Age(
- dob DATE NOT NULL,
- age INT PRIMARY KEY
-);
-
--- removed cid
-CREATE TABLE TeamMember (
- tmid INT PRIMARY KEY NOT NULL,
- name CHAR(20) NOT NULL,
- tid INT NOT NULL,
- start_date DATE NOT NULL,
- end_date DATE NOT NULL,
- salary INT NOT NULL,
- age INT NOT NULL,
- FOREIGN KEY (tid) REFERENCES Team(tid) ON DELETE CASCADE,
- FOREIGN KEY (age) REFERENCES Age(age) ON DELETE CASCADE
-);
-
--- renamed tmid to pid
-CREATE TABLE Player (
- pid INT PRIMARY KEY,
- position CHAR(10),
- FOREIGN KEY (pid) REFERENCES TeamMember(tmid)
-);
-
-
--- add tid fkey reference
-CREATE TABLE Coach (
- tmid INT PRIMARY KEY,
- tid INT NOT NULL,
- FOREIGN KEY (tmid) REFERENCES TeamMember(tmid),
- FOREIGN KEY (tid) REFERENCES Team(tid)
-);
-
-CREATE TABLE Season (
- year INT PRIMARY KEY,
- start_date DATE NOT NULL,
- end_date DATE NOT NULL,
- CHECK (start_date <= end_date)
-);
-
--- added age ref
-CREATE TABLE Owner (
- name CHAR(20) PRIMARY KEY,
- age INT NOT NULL,
- net_worth INT DEFAULT 0,
- FOREIGN KEY (age) REFERENCES Age(age)
-);
-
-CREATE TABLE Owns (
- oname CHAR(20),
- tid INT,
- PRIMARY KEY (oname, tid),
- FOREIGN KEY (oname) REFERENCES Owner(name),
- FOREIGN KEY (tid) REFERENCES Team(tid)
-);
-
-CREATE TABLE Sponsor (
- name CHAR(20) PRIMARY KEY,
- contribution INT DEFAULT 0
-);
-
-CREATE TABLE Sponsors (
- sname CHAR(20),
- tid INT,
- PRIMARY KEY (sname, tid),
- FOREIGN KEY (sname) REFERENCES Sponsor(name),
- FOREIGN KEY (tid) REFERENCES Team(tid)
-); 
-
-CREATE TABLE HasPlayed (
- home_tid INT,
- away_tid INT,
- PRIMARY KEY (home_tid, away_tid),
- FOREIGN KEY (home_tid) REFERENCES Team(tid),
- FOREIGN KEY (away_tid) REFERENCES Team(tid)
-);
-
-CREATE TABLE Referee (
- rid INT PRIMARY KEY,
- name CHAR(20) NOT NULL,
- experience_years INT DEFAULT 0
-);
-
-CREATE TABLE StatSheet (
- ssid INT PRIMARY KEY,
- home_points INT DEFAULT 0,
- away_points INT DEFAULT 0,
- home_steals INT DEFAULT 0,
- away_steals INT DEFAULT 0,
- home_assists INT DEFAULT 0,
- away_assists INT DEFAULT 0,
- home_rebounds INT DEFAULT 0,
- away_rebounds INT DEFAULT 0
-);
-
-CREATE TABLE Game (
- game_date date,
- home_tid INT,
- away_tid INT,
- score CHAR(10),
- ssid INT,
- year INT,
- rid INT,
- arena CHAR(20),
- PRIMARY KEY (game_date, home_tid, away_tid),
- FOREIGN KEY (home_tid) REFERENCES Team(tid),
- FOREIGN KEY (away_tid) REFERENCES Team(tid),
- FOREIGN KEY (ssid) REFERENCES StatSheet(ssid),
- FOREIGN KEY (year) REFERENCES Season(year),
- FOREIGN KEY (rid) REFERENCES Referee(rid),
- FOREIGN KEY (arena) REFERENCES Location(arena)
-);
-
-INSERT INTO Location (arena, city) VALUES ('Staples Center', 'Los Angeles');
-INSERT INTO Location (arena, city) VALUES ('Chase Center', 'Golden State');
-INSERT INTO Location (arena, city) VALUES ('TD Garden', 'Boston');
-INSERT INTO Location (arena, city) VALUES ('United Center', 'Chicago');
-INSERT INTO Location (arena, city) VALUES ('Toyota Center', 'Houston');
-
-INSERT INTO Team (tid, name, arena) VALUES (1, 'Lakers', 'Staples Center');
-INSERT INTO Team (tid, name, arena) VALUES (2, 'Warriors', 'Chase Center');
-INSERT INTO Team (tid, name, arena) VALUES (3, 'Celtics', 'TD Garden');
-INSERT INTO Team (tid, name, arena) VALUES (4, 'Bulls', 'United Center');
-INSERT INTO Team (tid, name, arena) VALUES (5, 'Rockets', 'Toyota Center');
+INSERT INTO Team (tid, name, city, arena) VALUES (1, 'Lakers', 'Staples Center');
+INSERT INTO Team (tid, name, city, arena) VALUES (2, 'Warriors', 'Chase Center');
+INSERT INTO Team (tid, name, city, arena) VALUES (3, 'Celtics', 'TD Garden');
+INSERT INTO Team (tid, name, city, arena) VALUES (4, 'Bulls', 'United Center');
+INSERT INTO Team (tid, name, city, arena) VALUES (5, 'Rockets', 'Toyota Center');
 
 
 INSERT INTO Age (dob, age) VALUES ('1990-05-15', 32);
@@ -282,6 +124,11 @@ INSERT INTO Player (pid, position) VALUES (53, 'Shooting Guard');
 INSERT INTO Player (pid, position) VALUES (54, 'Small Forward');
 INSERT INTO Player (pid, position) VALUES (55, 'Center');
 
+INSERT INTO Location (arena, city) VALUES ('Staples Center', 'Los Angeles');
+INSERT INTO Location (arena, city) VALUES ('Chase Center', 'Golden State');
+INSERT INTO Location (arena, city) VALUES ('TD Garden', 'Boston');
+INSERT INTO Location (arena, city) VALUES ('United Center', 'Chicago');
+INSERT INTO Location (arena, city) VALUES ('Toyota Center', 'Houston');
 
 INSERT INTO Coach (tmid, tid) VALUES ( 5, 1);
 INSERT INTO Coach (tmid, tid) VALUES ( 23, 2);
@@ -362,7 +209,4 @@ INSERT INTO Game VALUES ('2016-07-12', 3, 5, '105-102', 7, 2016, 7, 'TD Garden')
 INSERT INTO Game VALUES ('2017-08-28', 1, 3, '115-112', 8, 2017, 8, 'Staples Center');
 INSERT INTO Game VALUES ('2017-09-14', 4, 1, '100-96', 9, 2017, 9, 'United Center');
 INSERT INTO Game VALUES ('2018-10-30', 5, 2, '118-115', 10, 2018, 10, 'Toyota Center');
-
-
-
 
