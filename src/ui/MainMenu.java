@@ -1,5 +1,6 @@
 package ui;
 
+import database.DatabaseConnectionHandler;
 import model.Season;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ public class MainMenu extends JFrame {
 
     private Season season;
 
-    public MainMenu(Season season) {
+    public MainMenu(DatabaseConnectionHandler dbHandler) {
         setSize(800, 600);
         setTitle("BASKETBALL DATABASE");
         setLocationRelativeTo(null);
@@ -21,7 +22,7 @@ public class MainMenu extends JFrame {
         JLabel label = new JLabel("BASKETBALL DATABASE");
         label.setForeground(Color.white);
 
-        JPanel buttonPanel = getButtonPanel(label, season, imageLabel);
+        JPanel buttonPanel = getButtonPanel(label, imageLabel, dbHandler);
         buttonPanel.setBackground(new Color(186, 130, 181));
         getContentPane().add(buttonPanel, BorderLayout.CENTER);
         setVisible(true);
@@ -29,7 +30,7 @@ public class MainMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public JPanel getButtonPanel(JLabel imageLabel, Season season, JLabel imageLabel2) {
+    public JPanel getButtonPanel(JLabel imageLabel, JLabel imageLabel2, DatabaseConnectionHandler dbHandler) {
         JPanel buttonPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -41,15 +42,15 @@ public class MainMenu extends JFrame {
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        buttonPanel.add(gameInfoButton(season), gridBagConstraints);
+        buttonPanel.add(gameInfoButton(dbHandler), gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
-        buttonPanel.add(teamInfoButton(season), gridBagConstraints);
+        buttonPanel.add(teamInfoButton(dbHandler), gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        buttonPanel.add(playerInfoButton(season), gridBagConstraints);
+        buttonPanel.add(playerInfoButton(dbHandler), gridBagConstraints);
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -58,42 +59,33 @@ public class MainMenu extends JFrame {
         gridBagConstraints.insets = new Insets(0, 0, 10, 0);
         buttonPanel.add(imageLabel, gridBagConstraints);
 
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
-        String start = String.format(season.getStart_date());
-        buttonPanel.add(new JLabel("Start Date: " + start), gridBagConstraints);
-
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 6;
-        String end = String.valueOf(season.getStart_date());
-        buttonPanel.add(new JLabel("End Date: " + end), gridBagConstraints);
 
         return buttonPanel;
     }
 
-    public JButton gameInfoButton(Season season) {
+    public JButton gameInfoButton(DatabaseConnectionHandler dbHandler) {
         JButton gameButton = new JButton("View Game Info");
         gameButton.setPreferredSize(new Dimension(150, 50));
         gameButton.addActionListener(e -> {
-            new GameInfo(season);
+            new SeasonInfo(dbHandler);
         });
         return gameButton;
     }
 
-    public JButton teamInfoButton(Season season) {
+    public JButton teamInfoButton(DatabaseConnectionHandler dbHandler) {
         JButton teamButton = new JButton("View Team Info");
         teamButton.setPreferredSize(new Dimension(150, 50));
         teamButton.addActionListener(e -> {
-            new TeamInfo(season);
+             new TeamInfo(dbHandler);
         });
         return teamButton;
     }
 
-    public JButton playerInfoButton(Season season) {
+    public JButton playerInfoButton(DatabaseConnectionHandler dbHandler) {
         JButton playerButton = new JButton("View Player Info");
         playerButton.setPreferredSize(new Dimension(150, 50));
         playerButton.addActionListener(e -> {
-            new TeamMemberInfo(season);
+            // new TeamMemberInfo(season, dbHandler);
 
         });
         return playerButton;

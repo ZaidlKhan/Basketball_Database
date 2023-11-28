@@ -1,8 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Season {
     private int year;          //key
@@ -30,7 +28,7 @@ public class Season {
     }
 
     public String toString() {
-        String x = "Year: " + this.getYear() + "   ||   " + "Start: " + this.getStart_date() + "   ||   " + "End: " + this.getEnd_date();
+        String x = "Year: " + this.getYear();
         return x;
     }
 
@@ -42,12 +40,5 @@ public class Season {
         this.games.add(game);
     }
 
-    public Set<Team> getTeams() {
-        Set<Team> teams = new HashSet<>();
-        for (Game game : games) {
-            teams.add(game.getHome_team());
-            teams.add(game.getAway_team());
-        }
-        return teams;
-    }
+
 }

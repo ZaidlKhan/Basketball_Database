@@ -1,18 +1,18 @@
 package ui;
 
-import model.Game;
-import model.Season;
-import model.StatSheet;
+import database.DatabaseConnectionHandler;
+import model.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class GameInfo extends JFrame {
     private JPanel gameDataPanel;
 
-    public GameInfo(Season season) {
+    public GameInfo(Season season, DatabaseConnectionHandler dbHandler) {
         setSize(400, 550);
         setTitle("BASKETBALL DATABASE");
         setLocationRelativeTo(null);
@@ -28,9 +28,14 @@ public class GameInfo extends JFrame {
 
         getContentPane().add(backButtonPanel, BorderLayout.NORTH);
 
+        List<Game> games = dbHandler.getAllGames(season.getYear());
+        List<Team> teams = dbHandler.getAllTeams();
+
         DefaultListModel<String> gameListModel = new DefaultListModel<>();
-        for (Game game : season.getGames()) {
-            gameListModel.addElement(game.getHome_team().getName() + " vs " + game.getAway_team().getName());
+
+        for (Game game : games) {
+            String str = "SSID: " + game.getSsid() + "    ||  " + teams.get(game.getHomeTeam() - 1).getName() + "  VS  " + teams.get(game.getAwayTeam() - 1).getName();
+            gameListModel.addElement(str);
         }
 
         if (gameListModel.isEmpty()) {
@@ -49,11 +54,8 @@ public class GameInfo extends JFrame {
                     JList<String> list = (JList<String>) evt.getSource();
                     if (evt.getClickCount() == 2) {
                         int index = list.locationToIndex(evt.getPoint());
-                        String selectedGameString = list.getModel().getElementAt(index);
-                        Game selectedGame = findGameByString(season, selectedGameString);
-                        if (selectedGame != null) {
-                            displayGameInfo(selectedGame);
-                        }
+                        Game selectedGame = games.get(index);
+                        displayGameInfo(selectedGame,teams, dbHandler);
                     }
                 }
             });
@@ -63,17 +65,9 @@ public class GameInfo extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private Game findGameByString(Season season, String gameString) {
-        for (Game game : season.getGames()) {
-            String gameDesc = game.getHome_team().getName() + " vs " + game.getAway_team().getName();
-            if (gameDesc.equals(gameString)) {
-                return game;
-            }
-        }
-        return null;
-    }
 
-    private void displayGameInfo(Game game) {
+
+    private void displayGameInfo(Game game, List<Team> teams, DatabaseConnectionHandler dbHandler) {
         JDialog dialog = new JDialog(this, "Game Information", true);
         dialog.setLayout(new BorderLayout());
         dialog.setSize(400, 300);
@@ -81,21 +75,21 @@ public class GameInfo extends JFrame {
 
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-        infoPanel.add(new JLabel("GameID: " + game.getGame_id()));
-        infoPanel.add(new JLabel("Date: " + game.getDate()));
-        infoPanel.add(new JLabel("Home Team: " + game.getHome_team().getName()));
-        infoPanel.add(new JLabel("Away Team: " + game.getAway_team().getName()));
+        infoPanel.add(new JLabel("SSID: " + game.getSsid()));
+        infoPanel.add(new JLabel("Date: " + game.getGameDate()));
+        infoPanel.add(new JLabel("Home Team: " + teams.get(game.getHomeTeam() - 1).getName()));
+        infoPanel.add(new JLabel("Away Team: " + teams.get(game.getAwayTeam() - 1).getName()));
         dialog.add(infoPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
 
         JButton refInfoButton = new JButton("Referee Info");
-        refInfoButton.addActionListener(e -> displayRefereeInfo(game));
+        refInfoButton.addActionListener(e -> displayRefereeInfo(game, dbHandler));
         buttonPanel.add(refInfoButton);
 
         JButton statsSheetButton = new JButton("Statsheet Info");
-        statsSheetButton.addActionListener(e -> displayStatsheetInfo(game));
+        statsSheetButton.addActionListener(e -> displayStatsheetInfo(game, dbHandler));
         buttonPanel.add(statsSheetButton);
 
         dialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -103,26 +97,32 @@ public class GameInfo extends JFrame {
         dialog.setVisible(true);
     }
 
-    private void displayRefereeInfo(Game game) {
+
+    private void displayRefereeInfo(Game game, DatabaseConnectionHandler dbHandler) {
+        Referee ref = dbHandler.getReferee(game.getRid());
         JOptionPane.showMessageDialog(this,
-                "RefereeID: " + game.getReferee().getRef_id() +
-                "\nName: " + game.getReferee().getName() +
-                "\n Years Experience: " + game.getReferee().getYears_exprience() + " years");
+                "RefereeID: " + ref.getRef_id() +
+                "\nName: " + ref.getName() +
+                "\n Years Experience: " + ref.getYears_exprience() + " years");
     }
 
-    private void displayStatsheetInfo(Game game) {
-        StatSheet stats = game.getStatSheet();
+    private void displayStatsheetInfo(Game game, DatabaseConnectionHandler dbHandler) {
+        StatSheet stats = dbHandler.getStats(game.getSsid());
 
         String statsMessage = "Statsheet ID: " + stats.getStatsheet_id() + "\n" +
                 "Home Points: " + stats.getHome_points() + "\n" +
                 "Away Points: " + stats.getAway_points() + "\n" +
-                "Home Rebounds: " + stats.getHome_rebounds() + "\n" +
-                "Away Rebounds: " + stats.getAway_rebounds() + "\n" +
+                "Home Steals: " + stats.getHome_steals() + "\n" +
+                "Away Steals: " + stats.getAway_steals() + "\n" +
                 "Home Assists: " + stats.getHome_assits() + "\n" +
                 "Away Assists: " + stats.getAway_assits() + "\n" +
-                "Home Steals: " + stats.getHome_steals() + "\n" +
-                "Away Steals: " + stats.getAway_steals();
+                "Home Rebounds: " + stats.getHome_rebounds() + "\n" +
+                "Away Rebounds: " + stats.getAway_rebounds() + "\n";
+
 
         JOptionPane.showMessageDialog(this, statsMessage);
     }
 }
+
+
+

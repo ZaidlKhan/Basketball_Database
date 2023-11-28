@@ -20,7 +20,7 @@ public class SeasonInfo extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        titleLabel = new JLabel("Season Information");
+        titleLabel = new JLabel("Select Season");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 25));
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
 
@@ -42,9 +42,7 @@ public class SeasonInfo extends JFrame {
                     // Handle the double-clicked season, you can perform actions here
                     if (selectedSeason != null) {
                         Season newSeason = seasons.get(index);
-                        System.out.println("Double-clicked Season: " + selectedSeason);
-                        dispose();
-                        new MainMenu(newSeason);
+                        new GameInfo(newSeason,dbHandler);
                     }
                 }
             }

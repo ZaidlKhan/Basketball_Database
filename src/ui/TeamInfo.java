@@ -1,14 +1,18 @@
+
 package ui;
 
-import model.*;
+import database.DatabaseConnectionHandler;
+import model.Team;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 public class TeamInfo extends JFrame {
-    public TeamInfo(Season season) {
+    public TeamInfo(DatabaseConnectionHandler dbHandler) {
+
         setSize(400, 550);
         setTitle("TEAMS DATABASE");
         setLocationRelativeTo(null);
@@ -24,8 +28,9 @@ public class TeamInfo extends JFrame {
 
         getContentPane().add(backButtonPanel, BorderLayout.NORTH);
 
+        List<Team> teams = dbHandler.getAllTeams();
         DefaultListModel<String> teamListModel = new DefaultListModel<>();
-        for (Team team : season.getTeams()) {
+        for (Team team : teams) {
             teamListModel.addElement(team.getName());
         }
 
@@ -45,11 +50,7 @@ public class TeamInfo extends JFrame {
                     JList<String> list = (JList<String>) evt.getSource();
                     if (evt.getClickCount() == 2) {
                         int index = list.locationToIndex(evt.getPoint());
-                        String selectedTeamName = list.getModel().getElementAt(index);
-                        Team selectedTeam = findTeamByName(season, selectedTeamName);
-                        if (selectedTeam != null) {
-                            displayTeamInfo(selectedTeam);
-                        }
+                        displayTeamInfo(teams.get(index), dbHandler);
                     }
                 }
             });
@@ -59,34 +60,27 @@ public class TeamInfo extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    private Team findTeamByName(Season season, String teamName) {
-        for (Team team : season.getTeams()) {
-            if (team.getName().equals(teamName)) {
-                return team;
-            }
-        }
-        return null;
-    }
 
-    private void displayTeamInfo(Team team) {
+    private void displayTeamInfo(Team team, DatabaseConnectionHandler dbHandler) {
         StringBuilder teamInfo = new StringBuilder();
 
         teamInfo.append("Team Name: ").append(team.getName()).append("\n");
-        teamInfo.append("City: ").append(team.getCity()).append("\n");
-        teamInfo.append("Arena: ").append(team.getAreana()).append("\n");
         teamInfo.append("Team ID: ").append(team.getTeam_id()).append("\n");
+        teamInfo.append("Arena: ").append(team.getAreana()).append("\n");
 
-        teamInfo.append("Owner: ").append(team.getOwner().getName()).append("\n");
-
-        if (!team.getGames().isEmpty()) {
+        //teamInfo.append("Owner: ").append(team.getOwner().getName()).append("\n");
+        teamInfo.append("\n");
+        List<String> names = dbHandler.getTeamGames(team.getName());
+        if (!names.isEmpty()) {
             teamInfo.append("Games: \n");
-            for (Game game : team.getGames()) {
-                teamInfo.append(" - ").append(game.getHome_team().getName()).append(" vs ").append(game.getAway_team().getName()).append("\n");
+            for (String name: names) {
+                teamInfo.append(" - ").append(name).append("\n");
             }
         } else {
             teamInfo.append("No games scheduled\n");
         }
 
+        /*
         if (!team.getTeam_members().isEmpty()) {
             teamInfo.append("Team Members: \n");
             for (TeamMember member : team.getTeam_members()) {
@@ -105,7 +99,11 @@ public class TeamInfo extends JFrame {
             teamInfo.append("No sponsors\n");
         }
 
+
+         */
         JOptionPane.showMessageDialog(this, teamInfo.toString());
+        }
     }
 
-}
+
+

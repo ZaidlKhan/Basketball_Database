@@ -1,43 +1,57 @@
 package model;
 
 public class Game {
-    private final int game_id;
-    private final String date;
-    private final Team home_team;
-    private final Team away_team;
-    private final Referee referee;
-    private final StatSheet statSheet;
+    private final String game_date;
+    private final int home_team;
+    private final int away_team;
+    private final String score;
+    private final int ssid;
+    private final int year;
+    private final int rid;
+    private final String arena;
 
-    public Game(int game_id, String date, Team home_team, Team away_team, Referee referee, StatSheet statSheet) {
-        this.game_id = game_id;
-        this.date = date;
+    public Game(String game_date, int home_team, int away_team, String score, int ssid, int year, int rid, String arena) {
+        this.game_date = game_date;
         this.home_team = home_team;
         this.away_team = away_team;
-        this.referee = referee;
-        this.statSheet = statSheet;
+        this.score = score;
+        this.ssid = ssid;
+        this.year = year;
+        this.rid = rid;
+        this.arena = arena;
     }
 
-    public int getGame_id() {
-        return game_id;
+    // Getter methods
+
+    public String getGameDate() {
+        return game_date;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public Team getHome_team() {
+    public int getHomeTeam() {
         return home_team;
     }
 
-    public Team getAway_team() {
+    public int getAwayTeam() {
         return away_team;
     }
 
-    public Referee getReferee() {
-        return referee;
+    public String getScore() {
+        return score;
     }
 
-    public StatSheet getStatSheet() {
-        return statSheet;
+    public int getSsid() {
+        return ssid;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public int getRid() {
+        return rid;
+    }
+
+    public String getArena() {
+        return arena;
     }
 }

@@ -1,5 +1,7 @@
+/*
 package ui;
 
+import database.DatabaseConnectionHandler;
 import model.*;
 
 import javax.swing.*;
@@ -9,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.Random;
 
 public class TeamMemberInfo extends JFrame {
-    public TeamMemberInfo(Season season) {
+    public TeamMemberInfo(Season season, DatabaseConnectionHandler dbHandler) {
         setSize(600, 550);
         setTitle("TEAM MEMBERS DATABASE");
         setLocationRelativeTo(null);
@@ -192,7 +194,7 @@ public class TeamMemberInfo extends JFrame {
             Team team = member.getTeam();
             team.removeTeam_member(member);
             this.dispose();
-            new TeamMemberInfo(season);
+            new TeamMemberInfo(season, dbHandler);
         }
     }
 
@@ -254,3 +256,6 @@ public class TeamMemberInfo extends JFrame {
 
 
 }
+
+
+ */

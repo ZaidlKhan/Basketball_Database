@@ -65,7 +65,7 @@ public class LoginScreen extends JFrame {
                     System.out.println("Login successful!");
                     JOptionPane.showMessageDialog(LoginScreen.this, "Login successful!");
                     dispose();
-                    new SeasonInfo(dbHandler);
+                    new MainMenu(dbHandler);
                 } else {
                     // Failed login
                     System.out.println("Login failed. Please check your credentials.");
