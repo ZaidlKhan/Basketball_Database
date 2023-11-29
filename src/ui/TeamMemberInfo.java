@@ -71,7 +71,6 @@ public class TeamMemberInfo extends JFrame {
         });
 
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private void openAddPlayerDialog(DatabaseConnectionHandler dbhHandler) {
@@ -248,21 +247,18 @@ public class TeamMemberInfo extends JFrame {
 
 
         JButton saveButton = new JButton("Save");
-        modifyDialog.add(saveButton);
-        modifyDialog.setVisible(true);
-
         saveButton.addActionListener(e -> {
                 int age = Integer.parseInt(ageField.getText());
                 int salary = Integer.parseInt(salaryField.getText());
                 String startDate = startDateField.getText();
                 String endDate = endDateField.getText();
 
-                System.out.println(salary);
                 dbHandler.updateMember(member,age,salary,startDate,endDate);
                 modifyDialog.dispose();
-                // repaint();
-                // revalidate();
         });
+
+        modifyDialog.add(saveButton);
+        modifyDialog.setVisible(true);
     }
 
 

@@ -16,7 +16,6 @@ public class SeasonInfo extends JFrame {
 
     public SeasonInfo(DatabaseConnectionHandler dbHandler) {
         setTitle("Season Information");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLayout(null);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -65,6 +64,7 @@ public class SeasonInfo extends JFrame {
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(0);
                     new GameInfo(newSeason,dbHandler);
+                    dispose();
                 }
             }
         });
@@ -77,6 +77,7 @@ public class SeasonInfo extends JFrame {
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(1);
                     new GameInfo(newSeason,dbHandler);
+                    dispose();
                 }
             }
         });
@@ -89,6 +90,7 @@ public class SeasonInfo extends JFrame {
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(2);
                     new GameInfo(newSeason,dbHandler);
+                    dispose();
                 }
             }
         });
@@ -101,6 +103,7 @@ public class SeasonInfo extends JFrame {
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(3);
                     new GameInfo(newSeason,dbHandler);
+                    dispose();
                 }
             }
         });
@@ -113,6 +116,7 @@ public class SeasonInfo extends JFrame {
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(4);
                     new GameInfo(newSeason,dbHandler);
+                    dispose();
                 }
             }
         });

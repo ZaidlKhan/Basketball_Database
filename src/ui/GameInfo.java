@@ -24,6 +24,7 @@ public class GameInfo extends JFrame {
 
         backButton.addActionListener(e -> {
             this.dispose();
+            new SeasonInfo(dbHandler);
         });
 
         getContentPane().add(backButtonPanel, BorderLayout.NORTH);
@@ -64,7 +65,6 @@ public class GameInfo extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 
@@ -90,13 +90,35 @@ public class GameInfo extends JFrame {
         refInfoButton.addActionListener(e -> displayRefereeInfo(game, dbHandler));
         buttonPanel.add(refInfoButton);
 
-        JButton statsSheetButton = new JButton("Statsheet Info");
-        statsSheetButton.addActionListener(e -> displayStatsheetInfo(game, dbHandler));
-        buttonPanel.add(statsSheetButton);
+        JButton homeInfoButton = new JButton("Home Stats");
+        homeInfoButton.addActionListener(e -> homeInfoButton(game, dbHandler));
+        buttonPanel.add(homeInfoButton);
+
+        JButton awayInfoButton = new JButton("Away Stats");
+        awayInfoButton.addActionListener(e -> awayInfoButton(game, dbHandler));
+        buttonPanel.add(awayInfoButton);
 
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         dialog.setVisible(true);
+    }
+
+    private void homeInfoButton(Game game, DatabaseConnectionHandler dbHandler) {
+        StatSheet statSheet = dbHandler.getHomeStats(game.getSsid());
+        JOptionPane.showMessageDialog(this,
+                "Points: " + statSheet.getHome_points() +
+                        "\nAssists: " + statSheet.getHome_assits() +
+                        "\nRebounds: " + statSheet.getHome_rebounds() +
+                        "\nSteals: " + statSheet.getHome_steals());
+    }
+
+    private void awayInfoButton(Game game, DatabaseConnectionHandler dbHandler) {
+        StatSheet statSheet = dbHandler.getAwayStats(game.getSsid());
+        JOptionPane.showMessageDialog(this,
+                "Points: " + statSheet.getAway_points() +
+                        "\nAssists: " + statSheet.getAway_assits() +
+                        "\nRebounds: " + statSheet.getAway_rebounds() +
+                        "\nSteals: " + statSheet.getAway_steals());
     }
 
 
@@ -108,22 +130,6 @@ public class GameInfo extends JFrame {
                 "\n Years Experience: " + ref.getYears_exprience() + " years");
     }
 
-    private void displayStatsheetInfo(Game game, DatabaseConnectionHandler dbHandler) {
-        StatSheet stats = dbHandler.getStats(game.getSsid());
-
-        String statsMessage = "Statsheet ID: " + stats.getStatsheet_id() + "\n" +
-                "Home Points: " + stats.getHome_points() + "\n" +
-                "Away Points: " + stats.getAway_points() + "\n" +
-                "Home Steals: " + stats.getHome_steals() + "\n" +
-                "Away Steals: " + stats.getAway_steals() + "\n" +
-                "Home Assists: " + stats.getHome_assits() + "\n" +
-                "Away Assists: " + stats.getAway_assits() + "\n" +
-                "Home Rebounds: " + stats.getHome_rebounds() + "\n" +
-                "Away Rebounds: " + stats.getAway_rebounds() + "\n";
-
-
-        JOptionPane.showMessageDialog(this, statsMessage);
-    }
 }
 
 

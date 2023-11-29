@@ -218,7 +218,8 @@ public class DatabaseConnectionHandler {
 
     public void updateMember(TeamMember member, int age, int salary, String start, String end) {
         try {
-            String query = "UPDATE TeamMember SET age = ?, SET salary = ?, SET start_date = ?, SET end_date = ? WHERE tmid = ?";
+            String query = "UPDATE TeamMember SET age =" + age + ", SET salary =" + salary +
+                    ", SET start_date =" + start + ", SET end_date =" + end + " WHERE tmid =" + member.getPlayer_id();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, age);
             ps.setInt(2, salary);
@@ -344,25 +345,46 @@ public class DatabaseConnectionHandler {
         return ref;
     }
 
-    public StatSheet getStats(int ssid) {
+    // Projection
+    public StatSheet getHomeStats(int ssid) {
         StatSheet stats = null;
         try {
-            String query = "SELECT * from Statsheet where ssid = " + ssid;
+            String query = "SELECT ssid, home_points, home_steals, home_assists, home_rebounds from Statsheet where ssid = " + ssid;
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     int ssid2 = resultSet.getInt("ssid");
                     int homepoints = resultSet.getInt("home_points");
-                    int awaypoints = resultSet.getInt("away_points");
                     int homesteals = resultSet.getInt("home_steals");
-                    int awaysteals = resultSet.getInt("away_steals");
                     int homeassists = resultSet.getInt("home_assists");
-                    int awayassists = resultSet.getInt("away_assists");
                     int homerebounds = resultSet.getInt("home_rebounds");
+
+
+                    stats = new StatSheet(ssid2, homepoints, 0, homesteals, 0, homeassists, 0, homerebounds, 0);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return stats;
+    }
+
+    public StatSheet getAwayStats(int ssid) {
+        StatSheet stats = null;
+        try {
+            String query = "SELECT ssid, away_points, away_steals, away_assists, away_rebounds from Statsheet where ssid = " + ssid;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int ssid2 = resultSet.getInt("ssid");
+                    int awaypoints = resultSet.getInt("away_points");
+                    int awaysteals = resultSet.getInt("away_steals");
+                    int awayassists = resultSet.getInt("away_assists");
                     int awayrebounds = resultSet.getInt("away_rebounds");
 
 
-                    stats = new StatSheet(ssid2, homepoints, awaypoints, homesteals, awaysteals, homeassists, awayassists, homerebounds, awayrebounds);
+                    stats = new StatSheet(ssid2, 0, awaypoints, 0, awaysteals, 0, awayassists, 0, awayrebounds);
                 }
             }
         } catch (SQLException e) {

@@ -59,7 +59,6 @@ public class TeamInfo extends JFrame {
         }
 
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 
@@ -95,8 +94,8 @@ public class TeamInfo extends JFrame {
         teamInfo.append("\n");
         Owner owner = dbHandler.getOwner(team.getTeam_id());
         teamInfo.append("Owner: ").append(owner.getName()).append("\n");
-        teamInfo.append(" - ").append("Age: " + owner.getAge()).append("\n");
-        teamInfo.append(" - ").append("Net Worth: " + owner.getNet_worth()).append("\n");
+        teamInfo.append(" - ").append("Age: ").append(owner.getAge()).append("\n");
+        teamInfo.append(" - ").append("Net Worth: ").append(owner.getNet_worth()).append("\n");
 
 
         teamInfo.append("\n");
@@ -105,7 +104,7 @@ public class TeamInfo extends JFrame {
             teamInfo.append("Sponsors: \n");
             for (Sponsor sponsor : sponsors) {
                 teamInfo.append(" - ").append(sponsor.getName()).append("\n");
-                teamInfo.append("--").append(sponsor.getContributions()).append("\n").append("\n");
+                teamInfo.append("-").append(sponsor.getContributions()).append("\n").append("\n");
             }
         } else {
             teamInfo.append("No sponsors\n");
