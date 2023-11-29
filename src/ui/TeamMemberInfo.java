@@ -2,13 +2,17 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
-import model.*;
+import model.Player;
+import model.Team;
+import model.TeamMember;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TeamMemberInfo extends JFrame {
@@ -87,12 +91,9 @@ public class TeamMemberInfo extends JFrame {
         JTextField startDateField = new JTextField();
         JTextField endDateField = new JTextField();
 
-        nameField.setText("Jordan Bell");
-        ageField.setText("50");
-        salaryField.setText("20000");
-        positionField.setText("Center second");
-        startDateField.setText("2020-01-01");
-        endDateField.setText("2022-01-01");
+
+        startDateField.setText("2023-01-01");
+        endDateField.setText("2023-12-31");
 
         formPanel.add(new JLabel("Name:"));
         formPanel.add(nameField);
@@ -134,7 +135,9 @@ public class TeamMemberInfo extends JFrame {
 
             dbhHandler.insertTeamMember(tmid, name, tid, start_date, end_date, salary, age);
 
+
             JOptionPane.showMessageDialog(dialog, "Successfully added new member!");
+            System.out.println("Successfully added new member with tmid " + tmid);
             dialog.dispose();
             new TeamMemberInfo(dbhHandler);
 
@@ -159,6 +162,7 @@ public class TeamMemberInfo extends JFrame {
         }
         return num;
     }
+
 
     private void displayMemberInfo(int tmid, DatabaseConnectionHandler dbHandler) {
         TeamMember member = dbHandler.getMemberByID(tmid);
@@ -185,8 +189,9 @@ public class TeamMemberInfo extends JFrame {
         JButton deleteButton = new JButton("Delete");
         JButton modifyButton = new JButton("Modify");
 
+        int x = 0;
         deleteButton.addActionListener(e -> deleteMember(member, dbHandler));
-        modifyButton.addActionListener(e -> modifyMember(member, dbHandler));
+        modifyButton.addActionListener(e -> modifyMember(member, dbHandler, tmid, textArea));
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -224,7 +229,7 @@ public class TeamMemberInfo extends JFrame {
         return null;
     }
 
-    private void modifyMember(TeamMember member, DatabaseConnectionHandler dbHandler) {
+    private void modifyMember(TeamMember member, DatabaseConnectionHandler dbHandler, int tmid, JTextArea textArea) {
         JDialog modifyDialog = new JDialog(this, "Modify Member", true);
         modifyDialog.setLayout(new GridLayout(0, 2));
         modifyDialog.setSize(300, 200);
@@ -232,9 +237,19 @@ public class TeamMemberInfo extends JFrame {
 
         JTextField ageField = new JTextField(String.valueOf(member.getAge()));
         JTextField salaryField = new JTextField(String.valueOf(member.getSalary()));
-        JTextField startDateField = new JTextField(member.getStart_date());
-        JTextField endDateField = new JTextField(member.getEnd_date());
 
+        // Parse the input string using DateTimeFormatter
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime startD = LocalDateTime.parse(member.getStart_date(), formatter);
+        LocalDateTime endD = LocalDateTime.parse(member.getEnd_date(), formatter);
+
+        // Format the LocalDateTime to the desired output format
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String start_Date= startD.format(outputFormatter);
+        String end_Date = endD.format(outputFormatter);
+
+        JTextField startDateField = new JTextField(start_Date);
+        JTextField endDateField = new JTextField(end_Date);
 
         modifyDialog.add(new JLabel("Age:"));
         modifyDialog.add(ageField);
@@ -253,13 +268,24 @@ public class TeamMemberInfo extends JFrame {
                 String startDate = startDateField.getText();
                 String endDate = endDateField.getText();
 
-                dbHandler.updateMember(member,age,salary,startDate,endDate);
-                modifyDialog.dispose();
+                int x = dbHandler.updateMember(member,age,salary,startDate,endDate);
+                if (x == 1) {
+                    JOptionPane.showMessageDialog(modifyDialog, "Successfully updated information!");
+                    modifyDialog.dispose();
+                    System.out.println("Successfully updated member information!");
+                    this.dispose();
+                    new TeamMemberInfo(dbHandler);
+
+                } else {
+                    JOptionPane.showMessageDialog(modifyDialog, "Failed!, try again!");
+                    System.out.println("Failed! Try Again!");
+                }
+
         });
 
         modifyDialog.add(saveButton);
         modifyDialog.setVisible(true);
-    }
 
+    }
 
 }

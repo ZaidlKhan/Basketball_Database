@@ -67,4 +67,5 @@ public class TeamMember {
     public void setSalary(int salary) {
         this.salary = salary;
     }
+
 }

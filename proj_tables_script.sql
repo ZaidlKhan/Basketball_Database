@@ -43,7 +43,7 @@ CREATE TABLE Team (
  tid INT PRIMARY KEY,
  name CHAR(20) NOT NULL,
  arena CHAR(20) NOT NULL,
- FOREIGN KEY (arena) REFERENCES Location(arena)
+ FOREIGN KEY (arena) REFERENCES Location(arena) ON DELETE CASCADE
 );
 
 -- changed primary key to age
@@ -68,7 +68,7 @@ CREATE TABLE TeamMember (
 CREATE TABLE Player (
  pid INT PRIMARY KEY,
  position CHAR(20),
- FOREIGN KEY (pid) REFERENCES TeamMember(tmid)
+ FOREIGN KEY (pid) REFERENCES TeamMember(tmid) ON DELETE CASCADE
 );
 
 
@@ -76,7 +76,7 @@ CREATE TABLE Player (
 CREATE TABLE Coach (
  tmid INT PRIMARY KEY,
  tid INT NOT NULL,
- FOREIGN KEY (tmid) REFERENCES TeamMember(tmid),
+ FOREIGN KEY (tmid) REFERENCES TeamMember(tmid) ON DELETE CASCADE,
  FOREIGN KEY (tid) REFERENCES Team(tid)
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE Owns (
  oname CHAR(20),
  tid INT,
  PRIMARY KEY (oname, tid),
- FOREIGN KEY (oname) REFERENCES Owner(name),
+ FOREIGN KEY (oname) REFERENCES Owner(name) ON DELETE CASCADE,
  FOREIGN KEY (tid) REFERENCES Team(tid)
 );
 
@@ -385,6 +385,14 @@ INSERT INTO Game VALUES ( DATE '2022-07-12', 3, 5, '105-102', 7, 2022, 7, 'TD Ga
 INSERT INTO Game VALUES ( DATE '2022-08-28', 1, 3, '115-112', 8, 2022, 8, 'Staples Center');
 INSERT INTO Game VALUES ( DATE '2023-09-14', 4, 1, '100-96', 9, 2023, 9, 'United Center');
 INSERT INTO Game VALUES ( DATE '2020-05-30', 5, 2, '118-115', 10, 2020, 10, 'Toyota Center');
+
+UPDATE TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 1 and age < 25);
+Update TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 and age < 25);
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 3 or tid = 4) and age > 25;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 or tid = 5) and age > 25;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tmid = 52 or tmid = 53);
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 53;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 54;
 
 
 

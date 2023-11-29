@@ -216,10 +216,11 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public void updateMember(TeamMember member, int age, int salary, String start, String end) {
+    public int updateMember(TeamMember member, int age, int salary, String start, String end) {
+        int x = 0;
         try {
-            String query = "UPDATE TeamMember SET age =" + age + ", SET salary =" + salary +
-                    ", SET start_date =" + start + ", SET end_date =" + end + " WHERE tmid =" + member.getPlayer_id();
+            String query = "Update TEAMMEMBER set age = ?, salary = ?, start_date = ?, END_DATE = ? where  tmid = ?";
+
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, age);
             ps.setInt(2, salary);
@@ -232,14 +233,17 @@ public class DatabaseConnectionHandler {
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
                 System.out.println(WARNING_TAG + " TeamMember with tmid " + member.getPlayer_id() + " does not exist!");
+                return x;
             }
-
             connection.commit();
             ps.close();
+            x = 1;
+            return x;
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
         }
+        return x;
     }
     public TeamMember getMemberByID (int id) {
         TeamMember member = null;
@@ -434,7 +438,6 @@ public class DatabaseConnectionHandler {
             preparedStatement.executeUpdate();
             connection.commit();
 
-            System.out.println(preparedStatement.toString());
             preparedStatement.close();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
