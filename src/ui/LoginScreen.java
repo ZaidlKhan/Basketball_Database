@@ -83,7 +83,10 @@ public class LoginScreen extends JFrame {
         add(passwordLabel);
         add(passwordField);
         add(loginButton);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
         setVisible(true);
+
     }
 
 }

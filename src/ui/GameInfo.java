@@ -61,6 +61,8 @@ public class GameInfo extends JFrame {
             });
         }
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
