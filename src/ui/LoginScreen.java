@@ -20,19 +20,16 @@ public class LoginScreen extends JFrame {
 
     public LoginScreen() {
 
-        // Set frame properties
         setTitle("Basketball Database Oracle Login");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(null); // Using absolute positioning for flexibility
+        setLayout(null);
 
         dbHandler = new DatabaseConnectionHandler();
-
-        // Initialize components
         titleLabel = new JLabel("Oracle Database Login");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 30));
         titleLabel.setHorizontalAlignment((int) JLabel.CENTER_ALIGNMENT);
-        titleLabel.setBounds(90, 50, 400, 40); // Centered title
+        titleLabel.setBounds(90, 50, 400, 40);
 
         usernameLabel = new JLabel("Username:");
         usernameLabel.setFont(new Font("Arial", Font.BOLD, 17));
@@ -62,13 +59,11 @@ public class LoginScreen extends JFrame {
                 String password = new String(passwordChars);
 
                 if (dbHandler.login(username, password)) {
-                    // Successful login, you can proceed with further actions
                     System.out.println("Login successful!");
                     JOptionPane.showMessageDialog(LoginScreen.this, "Login successful!");
                     dispose();
                     new MainMenu(dbHandler);
                 } else {
-                    // Failed login
                     System.out.println("Login failed. Please check your credentials.");
                     JOptionPane.showMessageDialog(LoginScreen.this, "Login failed. Please check your credentials.");
                     passwordField.setText("");
@@ -76,7 +71,6 @@ public class LoginScreen extends JFrame {
             }
         });
 
-        // Add components to the frame
         add(titleLabel);
         add(usernameLabel);
         add(usernameField);
@@ -86,6 +80,7 @@ public class LoginScreen extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
         setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     }
 

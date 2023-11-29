@@ -58,7 +58,6 @@ public class SeasonInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSeason = seasonListModel.getElementAt(0);
-                // Handle the double-clicked season, you can perform actions here
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(0);
                     new GameInfo(newSeason,dbHandler);
@@ -71,7 +70,6 @@ public class SeasonInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSeason = seasonListModel.getElementAt(1);
-                // Handle the double-clicked season, you can perform actions here
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(1);
                     new GameInfo(newSeason,dbHandler);
@@ -84,7 +82,6 @@ public class SeasonInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSeason = seasonListModel.getElementAt(2);
-                // Handle the double-clicked season, you can perform actions here
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(2);
                     new GameInfo(newSeason,dbHandler);
@@ -97,7 +94,6 @@ public class SeasonInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSeason = seasonListModel.getElementAt(3);
-                // Handle the double-clicked season, you can perform actions here
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(3);
                     new GameInfo(newSeason,dbHandler);
@@ -110,7 +106,6 @@ public class SeasonInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedSeason = seasonListModel.getElementAt(4);
-                // Handle the double-clicked season, you can perform actions here
                 if (selectedSeason != null) {
                     Season newSeason = seasons.get(4);
                     new GameInfo(newSeason,dbHandler);
@@ -119,11 +114,7 @@ public class SeasonInfo extends JFrame {
             }
         });
         setVisible(true);
-
-
-
     }
-
 
     private void updateTitleSize(int newSize) {
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, newSize));

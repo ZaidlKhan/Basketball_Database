@@ -20,8 +20,6 @@ public class DatabaseConnectionHandler {
 
     public DatabaseConnectionHandler() {
         try {
-            // Load the Oracle JDBC driver
-            // Note that the path could change for new drivers
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
@@ -107,15 +105,13 @@ public class DatabaseConnectionHandler {
         List<Sponsor> sponsors = new ArrayList<>();
 
         try {
-            String query = "select s.name as sponsor,s.CONTRIBUTION,ss.TID from sponsors ss, sponsor s, team t where t.TID = ss.TID and s.name = ss.sname and t.name = " + "'" + name + "'";
+            String query = "select s.name as sponsor,s.CONTRIBUTION, from sponsors ss, sponsor s, team t where t.TID = ss.TID and s.name = ss.sname and t.name = " + "'" + name + "'";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 while (resultSet.next()) {
                     String sponsor = resultSet.getString("sponsor");
                     int con = resultSet.getInt("contribution");
-                    int tid = resultSet.getInt("tid");
-
                     Sponsor sponsor11 = new Sponsor(sponsor, con);
                     sponsors.add(sponsor11);
                 }
@@ -179,12 +175,11 @@ public class DatabaseConnectionHandler {
     public Player getPlayerByID (int id) {
         Player player = null;
         try {
-            String query = "select * from player where pid = " + id;
+            String query = "select position from player where pid = " + id;
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 while (resultSet.next()) {
-                    int pid = resultSet.getInt("pid");
                     String pos = resultSet.getString("position");
 
                     TeamMember mem = getMemberByID(id);
@@ -220,15 +215,12 @@ public class DatabaseConnectionHandler {
         int x = 0;
         try {
             String query = "Update TEAMMEMBER set age = ?, salary = ?, start_date = ?, END_DATE = ? where  tmid = ?";
-
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, age);
             ps.setInt(2, salary);
             ps.setDate(3,java.sql.Date.valueOf(start));
             ps.setDate(4,java.sql.Date.valueOf(end));
             ps.setInt(5, member.getPlayer_id());
-
-            System.out.println(salary);
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {
@@ -245,6 +237,7 @@ public class DatabaseConnectionHandler {
         }
         return x;
     }
+
     public TeamMember getMemberByID (int id) {
         TeamMember member = null;
         try {
@@ -273,6 +266,7 @@ public class DatabaseConnectionHandler {
 
         return member;
     }
+
     public List<TeamMember> getAllTeamMembers(int id) {
         List<TeamMember> teamMembers = new ArrayList<>();
 
@@ -363,7 +357,6 @@ public class DatabaseConnectionHandler {
                     int homeassists = resultSet.getInt("home_assists");
                     int homerebounds = resultSet.getInt("home_rebounds");
 
-
                     stats = new StatSheet(ssid2, homepoints, 0, homesteals, 0, homeassists, 0, homerebounds, 0);
                 }
             }
@@ -387,7 +380,6 @@ public class DatabaseConnectionHandler {
                     int awayassists = resultSet.getInt("away_assists");
                     int awayrebounds = resultSet.getInt("away_rebounds");
 
-
                     stats = new StatSheet(ssid2, 0, awaypoints, 0, awaysteals, 0, awayassists, 0, awayrebounds);
                 }
             }
@@ -400,17 +392,14 @@ public class DatabaseConnectionHandler {
 
     public Owner getOwner(int id) {
         Owner owner = null;
-
         try {
             String query = "select os.oname as ownername,o.age,o.NET_WORTH from owns os, owner o where os.oname = o.name and os.tid = " + id;
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
-
                 while (resultSet.next()) {
                     String oname = resultSet.getString("ownername");
                     int age = resultSet.getInt("age");
                     int netw = resultSet.getInt("net_worth");
-
                     owner = new Owner(oname, age, netw);
                 }
             }
@@ -430,11 +419,10 @@ public class DatabaseConnectionHandler {
             preparedStatement.setInt(1, tmid);
             preparedStatement.setString(2, name);
             preparedStatement.setInt(3, tid);
-            preparedStatement.setDate(4, start); // Corrected start date
-            preparedStatement.setDate(5, end); // Corrected end date
+            preparedStatement.setDate(4, start);
+            preparedStatement.setDate(5, end);
             preparedStatement.setInt(6, salary);
             preparedStatement.setInt(7, age);
-
             preparedStatement.executeUpdate();
             connection.commit();
 

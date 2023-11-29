@@ -238,16 +238,12 @@ public class TeamMemberInfo extends JFrame {
         JTextField ageField = new JTextField(String.valueOf(member.getAge()));
         JTextField salaryField = new JTextField(String.valueOf(member.getSalary()));
 
-        // Parse the input string using DateTimeFormatter
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime startD = LocalDateTime.parse(member.getStart_date(), formatter);
         LocalDateTime endD = LocalDateTime.parse(member.getEnd_date(), formatter);
-
-        // Format the LocalDateTime to the desired output format
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String start_Date= startD.format(outputFormatter);
         String end_Date = endD.format(outputFormatter);
-
         JTextField startDateField = new JTextField(start_Date);
         JTextField endDateField = new JTextField(end_Date);
 
