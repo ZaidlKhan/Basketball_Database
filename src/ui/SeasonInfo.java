@@ -15,7 +15,7 @@ public class SeasonInfo extends JFrame {
     private JLabel titleLabel;
 
     public SeasonInfo(DatabaseConnectionHandler dbHandler) {
-        setTitle("Resizable Title Frame");
+        setTitle("Season Information");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(600, 400);
         setLayout(null);
