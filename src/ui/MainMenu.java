@@ -85,7 +85,7 @@ public class MainMenu extends JFrame {
         JButton playerButton = new JButton("View Player Info");
         playerButton.setPreferredSize(new Dimension(150, 50));
         playerButton.addActionListener(e -> {
-            // new TeamMemberInfo(season, dbHandler);
+            new TeamMemberInfo(dbHandler);
 
         });
         return playerButton;

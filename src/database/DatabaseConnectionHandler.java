@@ -1,7 +1,7 @@
 package database;
 
 import model.*;
-import model.TeamMember;
+import util.PrintablePreparedStatement;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public class DatabaseConnectionHandler {
                     int con = resultSet.getInt("contribution");
                     int tid = resultSet.getInt("tid");
 
-                    Sponsor sponsor11 = new Sponsor(sponsor,con);
+                    Sponsor sponsor11 = new Sponsor(sponsor, con);
                     sponsors.add(sponsor11);
                 }
             }
@@ -157,6 +157,117 @@ public class DatabaseConnectionHandler {
         return games;
     }
 
+    public int getMaxTeamID() {
+        int max = 0;
+
+        try {
+            String query = "SELECT MAX(tmid) as max_id from TeamMember";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    max = resultSet.getInt("max_id");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return max;
+    }
+
+    public Player getPlayerByID (int id) {
+        Player player = null;
+        try {
+            String query = "select * from player where pid = " + id;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    int pid = resultSet.getInt("pid");
+                    String pos = resultSet.getString("position");
+
+                    TeamMember mem = getMemberByID(id);
+                    player = new Player(mem.getPlayer_id(), mem.getName(), mem.getTeam(), mem.getAge(), mem.getStart_date(), mem.getEnd_date(), mem.getSalary(), pos);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return player;
+    }
+
+    public void deleteTeamMember (int memberID) {
+        try {
+            String query = "DELETE FROM TeamMember WHERE tmid = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, memberID);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " TeamMember with tmid " + memberID + " does not exist!");
+            }
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void updateMember(TeamMember member, int age, int salary, String start, String end) {
+        try {
+            String query = "UPDATE TeamMember SET age = ?, SET salary = ?, SET start_date = ?, SET end_date = ? WHERE tmid = ?";
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setInt(1, age);
+            ps.setInt(2, salary);
+            ps.setDate(3,java.sql.Date.valueOf(start));
+            ps.setDate(4,java.sql.Date.valueOf(end));
+            ps.setInt(5, member.getPlayer_id());
+
+            System.out.println(salary);
+
+            int rowCount = ps.executeUpdate();
+            if (rowCount == 0) {
+                System.out.println(WARNING_TAG + " TeamMember with tmid " + member.getPlayer_id() + " does not exist!");
+            }
+
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+    public TeamMember getMemberByID (int id) {
+        TeamMember member = null;
+        try {
+            String query = "select tm.*,t.name as teamname,t.arena from TEAMMEMBER tm, Team t where t.tid = tm.tid and tm.tmid = " + id;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+                while (resultSet.next()) {
+                    int tmid = resultSet.getInt("tmid");
+                    String memberName = resultSet.getString("name");
+                    int tid = resultSet.getInt("tid");
+                    String start_date = resultSet.getString("start_date");
+                    String end_date = resultSet.getString("end_date");
+                    int salary = resultSet.getInt("salary");
+                    int age = resultSet.getInt("age");
+                    String teamName = resultSet.getString("teamname");
+                    String arena = resultSet.getString("arena");
+
+                    Team team = new Team(tid, teamName, arena);
+                    member = new TeamMember(tmid, memberName, team, age, start_date, end_date, salary);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+
+        return member;
+    }
     public List<TeamMember> getAllTeamMembers(int id) {
         List<TeamMember> teamMembers = new ArrayList<>();
 
@@ -274,7 +385,7 @@ public class DatabaseConnectionHandler {
                     int age = resultSet.getInt("age");
                     int netw = resultSet.getInt("net_worth");
 
-                    owner = new Owner(oname,age,netw);
+                    owner = new Owner(oname, age, netw);
                 }
             }
         } catch (SQLException e) {
@@ -285,4 +396,35 @@ public class DatabaseConnectionHandler {
 
     }
 
+    public void insertTeamMember(int tmid, String name, int tid, Date start, Date end, int salary, int age) {
+        boolean x = false;
+        try {
+            String query = "INSERT INTO TeamMember VALUES (?,?,?,?,?,?,?)";
+            PrintablePreparedStatement preparedStatement = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            preparedStatement.setInt(1, tmid);
+            preparedStatement.setString(2, name);
+            preparedStatement.setInt(3, tid);
+            preparedStatement.setDate(4, start); // Corrected start date
+            preparedStatement.setDate(5, end); // Corrected end date
+            preparedStatement.setInt(6, salary);
+            preparedStatement.setInt(7, age);
+
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+            System.out.println(preparedStatement.toString());
+            preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    private void rollbackConnection() {
+        try  {
+            connection.rollback();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+        }
+    }
 }
