@@ -54,8 +54,6 @@ public class SeasonInfo extends JFrame {
         add(button4);
         add(button5);
 
-
-
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
