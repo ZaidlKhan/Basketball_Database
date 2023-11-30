@@ -4,6 +4,7 @@ import database.DatabaseConnectionHandler;
 import model.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,9 +14,11 @@ public class GameInfo extends JFrame {
     private JPanel gameDataPanel;
 
     public GameInfo(Season season, DatabaseConnectionHandler dbHandler) {
-        setSize(400, 550);
+        setSize(420, 400);
         setTitle("BASKETBALL DATABASE");
         setLocationRelativeTo(null);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
 
         JPanel backButtonPanel = new JPanel();
         backButtonPanel.setLayout(new BorderLayout());
@@ -30,11 +33,14 @@ public class GameInfo extends JFrame {
 
         List<Game> games = dbHandler.getAllGames(season.getYear());
         List<Team> teams = dbHandler.getAllTeams();
+        getContentPane().setBackground(new Color(176, 138, 78));
 
         DefaultListModel<String> gameListModel = new DefaultListModel<>();
 
+        gameListModel.addElement("                                " + String.valueOf(season.getYear()));
+        gameListModel.addElement("\n");
         for (Game game : games) {
-            String str = "SSID: " + game.getSsid() + "    ||  " + teams.get(game.getHomeTeam() - 1).getName() + "  VS  " + teams.get(game.getAwayTeam() - 1).getName();
+            String str = "  SSID: " + game.getSsid() + "     ||   " + teams.get(game.getHomeTeam() - 1).getName().trim() + "  VS  " + teams.get(game.getAwayTeam() - 1).getName().trim();
             gameListModel.addElement(str);
         }
 
@@ -45,15 +51,18 @@ public class GameInfo extends JFrame {
         } else {
             JList<String> gameList = new JList<>(gameListModel);
             gameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-            JScrollPane scrollPane = new JScrollPane(gameList);
-            getContentPane().add(scrollPane, BorderLayout.CENTER);
+            gameList.setBounds(50,30,300,300);
+            gameList.setFont(new Font ("Arial", Font.BOLD,16));
+            gameList.setForeground(Color.white);
+            gameList.setBackground(new Color(124, 97, 55));
+            getContentPane().add(gameList);
+            setLayout(null);
 
             gameList.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent evt) {
                     JList<String> list = (JList<String>) evt.getSource();
                     if (evt.getClickCount() == 2) {
-                        int index = list.locationToIndex(evt.getPoint());
+                        int index = list.locationToIndex(evt.getPoint()) - 2;
                         Game selectedGame = games.get(index);
                         displayGameInfo(selectedGame,teams, dbHandler);
                     }
@@ -61,8 +70,7 @@ public class GameInfo extends JFrame {
             });
         }
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
+
         setVisible(true);
     }
 
@@ -70,34 +78,61 @@ public class GameInfo extends JFrame {
 
     private void displayGameInfo(Game game, List<Team> teams, DatabaseConnectionHandler dbHandler) {
         JDialog dialog = new JDialog(this, "Game Information", true);
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(400, 300);
-        setLocationRelativeTo(null);
+        //dialog.setLayout(new BorderLayout());
+        dialog.setSize(450, 400);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(null);
+        dialog.setBackground(new Color(148, 119, 59));
 
-        JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
-        infoPanel.add(new JLabel("SSID: " + game.getSsid()));
-        infoPanel.add(new JLabel("Date: " + game.getGameDate()));
-        infoPanel.add(new JLabel("Home Team: " + teams.get(game.getHomeTeam() - 1).getName()));
-        infoPanel.add(new JLabel("Away Team: " + teams.get(game.getAwayTeam() - 1).getName()));
-        dialog.add(infoPanel, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
+        StringBuilder teamInfo = new StringBuilder();
 
-        JButton refInfoButton = new JButton("Referee Info");
-        refInfoButton.addActionListener(e -> displayRefereeInfo(game, dbHandler));
-        buttonPanel.add(refInfoButton);
+        teamInfo.append("\n   SSID: ").append(game.getSsid()).append("\n\n");
+        teamInfo.append("   Game Date: ").append(game.getGameDate()).append("\n\n");
+        teamInfo.append("   Home Team: ").append(teams.get(game.getHomeTeam() - 1).getName()).append("\n\n");
+        teamInfo.append("   Away Team: ").append(teams.get(game.getAwayTeam() - 1).getName()).append("\n\n");
+
+        JTextArea teamInfoTextArea = new JTextArea();
+        teamInfoTextArea.setFont(new Font("Arial", Font.BOLD, 16));
+        //teamInfoTextArea.setOpaque(false);
+        teamInfoTextArea.setEditable(false);
+        teamInfoTextArea.setBounds(0, 0, 450, 400);
+        teamInfoTextArea.setForeground(Color.white);
+        teamInfoTextArea.setBackground(new Color(148, 119, 59));
+
+        teamInfoTextArea.setText(teamInfo.toString());
+        dialog.add(teamInfoTextArea);
+
+        Border roundedBorder = BorderFactory.createLineBorder(Color.white, 4, true);
+
 
         JButton homeInfoButton = new JButton("Home Stats");
+        homeInfoButton.setBounds(60, 180, 140, 60);
         homeInfoButton.addActionListener(e -> homeInfoButton(game, dbHandler));
-        buttonPanel.add(homeInfoButton);
+        homeInfoButton.setFont(new Font("Arial",Font.BOLD,15));
+        homeInfoButton.setBorder(roundedBorder);
+        homeInfoButton.setBackground(Color.white);
+        homeInfoButton.setFocusPainted(false);
+        teamInfoTextArea.add(homeInfoButton);
 
         JButton awayInfoButton = new JButton("Away Stats");
+        awayInfoButton.setBounds(240, 180, 140, 60);
         awayInfoButton.addActionListener(e -> awayInfoButton(game, dbHandler));
-        buttonPanel.add(awayInfoButton);
+        awayInfoButton.setFont(new Font("Arial",Font.BOLD,15));
+        awayInfoButton.setFocusPainted(false);
+        awayInfoButton.setBackground(Color.white);
+        awayInfoButton.setBorder(roundedBorder);
+        teamInfoTextArea.add(awayInfoButton);
 
-        dialog.add(buttonPanel, BorderLayout.SOUTH);
+        JButton refInfoButton = new JButton("Referee Info");
+        refInfoButton.setFont(new Font("Arial",Font.BOLD,15));
+        refInfoButton.setBackground(Color.white);
+        refInfoButton.setBounds(148, 270, 140, 60);
+        refInfoButton.addActionListener(e -> displayRefereeInfo(game, dbHandler));
+        refInfoButton.setFocusPainted(false);
+        refInfoButton.setBorder(roundedBorder);
+        teamInfoTextArea.add(refInfoButton);
+
 
         dialog.setVisible(true);
     }
