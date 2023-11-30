@@ -30,9 +30,17 @@ public class MainMenu extends JFrame {
 
         ImageIcon imageIcon = new ImageIcon("src/giphy.gif");
         JLabel imageLabel = new JLabel();
+        JLabel imageLabel2 = new JLabel();
+        JLabel imageLabel3 = new JLabel();
         imageLabel.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(150, -1, (int) (Image.SCALE_DEFAULT + 0.5))));
-        imageLabel.setBounds(400,160,150,100);
+        imageLabel.setBounds(170,160,150,100);
+        imageLabel2.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(150, -1, (int) (Image.SCALE_DEFAULT + 0.5))));
+        imageLabel2.setBounds(430,160,150,100);
+        imageLabel3.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(150, -1, (int) (Image.SCALE_DEFAULT + 0.5))));
+        imageLabel3.setBounds(685,160,150,100);
         add(imageLabel);
+        add(imageLabel2);
+        add(imageLabel3);
 
         JButton teamInfobutton = new JButton("TEAM INFORMATION");
         JButton gameInfobutton = new JButton("GAME INFORMATION");

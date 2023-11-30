@@ -90,7 +90,7 @@ public class DatabaseConnectionHandler {
                     String name1 = resultSet.getString("name1");
                     String name2 = resultSet.getString("name2");
 
-                    String str = name1 + " VS " + name2;
+                    String str = name1.trim() + " VS " + name2.trim();
                     gameNames.add(str);
                 }
             }
@@ -412,7 +412,6 @@ public class DatabaseConnectionHandler {
     }
 
     public void insertTeamMember(int tmid, String name, int tid, Date start, Date end, int salary, int age) {
-        boolean x = false;
         try {
             String query = "INSERT INTO TeamMember VALUES (?,?,?,?,?,?,?)";
             PrintablePreparedStatement preparedStatement = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -427,6 +426,23 @@ public class DatabaseConnectionHandler {
             connection.commit();
 
             preparedStatement.close();
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+    }
+
+    public void insertPlayer(int tmid, String pos) {
+        try {
+            String query = "INSERT INTO Player VALUES (?,?)";
+            PrintablePreparedStatement preparedStatement = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            preparedStatement.setInt(1, tmid);
+            preparedStatement.setString(2, pos);
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+            preparedStatement.close();
+            System.out.println("Successfully added to Player with tmid = " + " and position " + pos);
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();

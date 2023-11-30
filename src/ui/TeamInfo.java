@@ -47,8 +47,6 @@ public class TeamInfo extends JFrame {
         JButton button4 = new JButton(teams.get(3).getName().trim());
         JButton button5 = new JButton(teams.get(4).getName().trim());
 
-        System.out.println(teams.size());
-
         Font buttonFont = button1.getFont();
         button1.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
         button2.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
@@ -185,12 +183,12 @@ public class TeamInfo extends JFrame {
             teamInfo.append("No sponsors\n");
         }
 
-
-        JOptionPane.showMessageDialog(this, teamInfo.toString());
+        // JOptionPane.showMessageDialog(this, teamInfo.toString());
+        new TeamInfoWindow(team,dbHandler);
     }
     private void updateTitleSize(int newSize) {
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, newSize));
-        titleLabel.setBounds(200, 40, titleLabel.getPreferredSize().width, titleLabel.getPreferredSize().height);
+        titleLabel.setBounds(215, 45, titleLabel.getPreferredSize().width, titleLabel.getPreferredSize().height);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 

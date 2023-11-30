@@ -96,7 +96,6 @@ public class SeasonInfo extends JFrame {
                 if (seasons != null) {
                     Season newSeason = seasons.get(0);
                     new GameInfo(newSeason,dbHandler);
-                    dispose();
                 }
             }
         });
@@ -107,7 +106,6 @@ public class SeasonInfo extends JFrame {
                 if (seasons != null) {
                     Season newSeason = seasons.get(1);
                     new GameInfo(newSeason,dbHandler);
-                    dispose();
                 }
             }
         });
@@ -118,7 +116,6 @@ public class SeasonInfo extends JFrame {
                 if (seasons != null) {
                     Season newSeason = seasons.get(2);
                     new GameInfo(newSeason,dbHandler);
-                    dispose();
                 }
             }
         });
@@ -129,7 +126,6 @@ public class SeasonInfo extends JFrame {
                 if (seasons != null) {
                     Season newSeason = seasons.get(3);
                     new GameInfo(newSeason,dbHandler);
-                    dispose();
                 }
             }
         });
@@ -140,7 +136,6 @@ public class SeasonInfo extends JFrame {
                 if (seasons != null) {
                     Season newSeason = seasons.get(4);
                     new GameInfo(newSeason,dbHandler);
-                    dispose();
                 }
             }
         });
@@ -154,5 +149,4 @@ public class SeasonInfo extends JFrame {
         titleLabel.setBounds(160, 40, titleLabel.getPreferredSize().width, titleLabel.getPreferredSize().height);
         titleLabel.setHorizontalAlignment(JLabel.CENTER);
     }
-
 }

@@ -134,11 +134,13 @@ public class TeamMemberInfo extends JFrame {
             int tmid = (dbhHandler.getMaxTeamID()) + 1;
 
             dbhHandler.insertTeamMember(tmid, name, tid, start_date, end_date, salary, age);
+            dbhHandler.insertPlayer(tmid,position);
 
 
             JOptionPane.showMessageDialog(dialog, "Successfully added new member!");
             System.out.println("Successfully added new member with tmid " + tmid);
             dialog.dispose();
+            this.dispose();
             new TeamMemberInfo(dbhHandler);
 
         });
