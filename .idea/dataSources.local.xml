@@ -21,7 +21,7 @@
       <load-sources>user_and_system_sources</load-sources>
       <ssh-properties>
         <enabled>true</enabled>
-        <ssh-config-id>042f2153-60cf-4225-a6eb-91f9cd14d285</ssh-config-id>
+        <ssh-config-id>95a7301f-6ac0-42b8-bc21-5b85df960b55</ssh-config-id>
         <local-port>1522</local-port>
       </ssh-properties>
     </data-source>

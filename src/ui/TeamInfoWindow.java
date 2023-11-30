@@ -63,13 +63,17 @@ public class TeamInfoWindow extends JFrame {
             teamInfo.append("     Sponsors: \n");
             for (Sponsor sponsor : sponsors) {
                 teamInfo.append("           - ").append(sponsor.getName()).append("\n");
-                teamInfo.append("           - ").append(sponsor.getContributions()).append("\n").append("\n");
+                teamInfo.append("                - ").append(sponsor.getContributions()).append("\n").append("\n");
             }
         } else {
             teamInfo.append("No sponsors\n");
         }
 
-        // Display team information on the left side
+        int selectedTeamId = team.getTeam_id();
+        int totalSalary = dbHandler.getTotalSalaryForTeam(selectedTeamId);
+        teamInfo.append("     Total Salary: " +
+                "\n     $").append(totalSalary).append("\n");
+
         teamInfoTextArea.setText(teamInfo.toString());
         getContentPane().add(teamInfoTextArea);
 
@@ -84,7 +88,7 @@ public class TeamInfoWindow extends JFrame {
             teamInfo2.append("No team members\n");
         }
 
-        // Display team members on the right side
+
         teamInfoTextArea2.setText(teamInfo2.toString());
         getContentPane().add(teamInfoTextArea2);
 
@@ -103,12 +107,8 @@ public class TeamInfoWindow extends JFrame {
         getContentPane().add(teamInfoTextArea3);
 
 
-
-
-
-
         setLocationRelativeTo(null);
-        setLayout(null); // Set layout to null for absolute positioning
+        setLayout(null);
         setVisible(true);
     }
 

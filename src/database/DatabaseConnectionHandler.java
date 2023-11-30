@@ -105,15 +105,21 @@ public class DatabaseConnectionHandler {
         List<Sponsor> sponsors = new ArrayList<>();
 
         try {
-            String query = "select s.name as sponsor,s.CONTRIBUTION from sponsors ss, sponsor s, team t where t.TID = ss.TID and s.name = ss.sname and t.name = " + "'" + name + "'";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+            String query = "SELECT s.name as sponsor, s.CONTRIBUTION " +
+                    "FROM sponsors ss " +
+                    "JOIN sponsor s ON s.name = ss.sname " +
+                    "JOIN team t ON t.TID = ss.TID " +
+                    "WHERE t.name = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(1, name);
 
-                while (resultSet.next()) {
-                    String sponsor = resultSet.getString("sponsor");
-                    int con = resultSet.getInt("contribution");
-                    Sponsor sponsor11 = new Sponsor(sponsor, con);
-                    sponsors.add(sponsor11);
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String sponsor = resultSet.getString("sponsor");
+                        int contribution = resultSet.getInt("contribution");
+                        Sponsor sponsorObject = new Sponsor(sponsor, contribution);
+                        sponsors.add(sponsorObject);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -121,8 +127,8 @@ public class DatabaseConnectionHandler {
         }
 
         return sponsors;
-
     }
+
 
     public List<Game> getAllGames(int yrr) {
         List<Game> games = new ArrayList<>();
@@ -447,6 +453,28 @@ public class DatabaseConnectionHandler {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
             rollbackConnection();
         }
+    }
+
+    public int getTotalSalaryForTeam(int teamId) {
+        int totalSalary = 0;
+
+        try {
+            String query = "SELECT SUM(salary) AS total FROM TeamMember WHERE tid = ?";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setInt(1, teamId);
+
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    if (resultSet.next()) {
+                        totalSalary = resultSet.getInt("total");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(EXCEPTION_TAG + " " + e.getMessage());
+            rollbackConnection();
+        }
+
+        return totalSalary;
     }
 
     private void rollbackConnection() {
