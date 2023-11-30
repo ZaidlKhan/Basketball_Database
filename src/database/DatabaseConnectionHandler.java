@@ -105,7 +105,7 @@ public class DatabaseConnectionHandler {
         List<Sponsor> sponsors = new ArrayList<>();
 
         try {
-            String query = "select s.name as sponsor,s.CONTRIBUTION, from sponsors ss, sponsor s, team t where t.TID = ss.TID and s.name = ss.sname and t.name = " + "'" + name + "'";
+            String query = "select s.name as sponsor,s.CONTRIBUTION from sponsors ss, sponsor s, team t where t.TID = ss.TID and s.name = ss.sname and t.name = " + "'" + name + "'";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 

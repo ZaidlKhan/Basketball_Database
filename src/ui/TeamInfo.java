@@ -1,66 +1,141 @@
-
 package ui;
 
 import database.DatabaseConnectionHandler;
-import model.*;
+import model.Owner;
+import model.Sponsor;
 import model.Team;
 import model.TeamMember;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class TeamInfo extends JFrame {
+
+    private JLabel titleLabel;
+
     public TeamInfo(DatabaseConnectionHandler dbHandler) {
+        setTitle("Team Information");
+        setSize(600, 400);
+        setLayout(null);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Border roundedBorder = BorderFactory.createLineBorder(Color.white, 4, true);
 
-        setSize(400, 550);
-        setTitle("TEAMS DATABASE");
-        setLocationRelativeTo(null);
+        titleLabel = new JLabel("Select Team");
+        titleLabel.setForeground(Color.white);
 
-        JPanel backButtonPanel = new JPanel();
-        backButtonPanel.setLayout(new BorderLayout());
-        JButton backButton = new JButton("Back");
-        backButtonPanel.add(backButton, BorderLayout.EAST);
+        add(titleLabel);
+        setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
+        updateTitleSize(30);
+        getContentPane().setBackground(new Color(173, 133, 50));
 
-        backButton.addActionListener(e -> {
-            this.dispose();
-        });
-
-        getContentPane().add(backButtonPanel, BorderLayout.NORTH);
+        int buttonWidth = 140;
+        int buttonHeight = 80;
 
         List<Team> teams = dbHandler.getAllTeams();
-        DefaultListModel<String> teamListModel = new DefaultListModel<>();
-        for (Team team : teams) {
-            teamListModel.addElement(team.getName());
+        if (teams.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Failed to load teams!");
+            dispose();
         }
 
-        if (teamListModel.isEmpty()) {
-            JLabel noTeamsLabel = new JLabel("NO TEAMS");
-            noTeamsLabel.setHorizontalAlignment(JLabel.CENTER);
-            getContentPane().add(noTeamsLabel, BorderLayout.CENTER);
-        } else {
-            JList<String> teamList = new JList<>(teamListModel);
-            teamList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JButton button1 = new JButton(teams.get(0).getName().trim());
+        JButton button2 = new JButton(teams.get(1).getName().trim());
+        JButton button3 = new JButton(teams.get(2).getName().trim());
+        JButton button4 = new JButton(teams.get(3).getName().trim());
+        JButton button5 = new JButton(teams.get(4).getName().trim());
 
-            JScrollPane scrollPane = new JScrollPane(teamList);
-            getContentPane().add(scrollPane, BorderLayout.CENTER);
+        System.out.println(teams.size());
 
-            teamList.addMouseListener(new MouseAdapter() {
-                public void mouseClicked(MouseEvent evt) {
-                    JList<String> list = (JList<String>) evt.getSource();
-                    if (evt.getClickCount() == 2) {
-                        int index = list.locationToIndex(evt.getPoint());
-                        displayTeamInfo(teams.get(index), dbHandler);
-                    }
+        Font buttonFont = button1.getFont();
+        button1.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
+        button2.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
+        button3.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
+        button4.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
+        button5.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
+
+        button1.setBackground(new Color(155, 103, 24));
+        button1.setForeground(Color.white);
+        button2.setBackground(new Color(155, 103, 24));
+        button2.setForeground(Color.white);
+        button3.setBackground(new Color(155, 103, 24));
+        button3.setForeground(Color.white);
+        button4.setBackground(new Color(155, 103, 24));
+        button4.setForeground(Color.white);
+        button5.setBackground(new Color(155, 103, 24));
+        button5.setForeground(Color.white);
+
+        button1.setBorder(roundedBorder);
+        button1.setFocusPainted(false);
+        button2.setBorder(roundedBorder);
+        button2.setFocusPainted(false);
+        button3.setBorder(roundedBorder);
+        button3.setFocusPainted(false);
+        button4.setBorder(roundedBorder);
+        button4.setFocusPainted(false);
+        button5.setBorder(roundedBorder);
+        button5.setFocusPainted(false);
+
+        button1.setBounds(70, 130, buttonWidth, buttonHeight);
+        button2.setBounds(230, 130, buttonWidth, buttonHeight);
+        button3.setBounds(390, 130, buttonWidth, buttonHeight);
+        button4.setBounds(70, 230, buttonWidth, buttonHeight);
+        button5.setBounds(230, 230, buttonWidth, buttonHeight);
+
+        add(button1);
+        add(button2);
+        add(button3);
+        add(button4);
+        add(button5);
+
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (teams != null) {
+                    displayTeamInfo(teams.get(0),dbHandler);
                 }
-            });
-        }
+            }
+        });
 
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (teams != null) {
+                    displayTeamInfo(teams.get(1),dbHandler);
+                }
+            }
+        });
+
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (teams != null) {
+                    displayTeamInfo(teams.get(2),dbHandler);
+                }
+            }
+        });
+
+        button4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (teams != null) {
+                    displayTeamInfo(teams.get(3),dbHandler);
+                }
+            }
+        });
+
+        button5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (teams != null) {
+                    displayTeamInfo(teams.get(4),dbHandler);
+                }
+            }
+        });
         setVisible(true);
     }
-
 
     private void displayTeamInfo(Team team, DatabaseConnectionHandler dbHandler) {
         StringBuilder teamInfo = new StringBuilder();
@@ -112,8 +187,11 @@ public class TeamInfo extends JFrame {
 
 
         JOptionPane.showMessageDialog(this, teamInfo.toString());
-        }
+    }
+    private void updateTitleSize(int newSize) {
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, newSize));
+        titleLabel.setBounds(200, 40, titleLabel.getPreferredSize().width, titleLabel.getPreferredSize().height);
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
     }
 
-
-
+}
