@@ -1,10 +1,7 @@
 package ui;
 
 import database.DatabaseConnectionHandler;
-import model.Owner;
-import model.Sponsor;
 import model.Team;
-import model.TeamMember;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -92,7 +89,7 @@ public class TeamInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (teams != null) {
-                    displayTeamInfo(teams.get(0),dbHandler);
+                    new TeamInfoWindow(teams.get(0),dbHandler);
                 }
             }
         });
@@ -101,7 +98,7 @@ public class TeamInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (teams != null) {
-                    displayTeamInfo(teams.get(1),dbHandler);
+                    new TeamInfoWindow(teams.get(1),dbHandler);
                 }
             }
         });
@@ -110,7 +107,7 @@ public class TeamInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (teams != null) {
-                    displayTeamInfo(teams.get(2),dbHandler);
+                    new TeamInfoWindow(teams.get(2),dbHandler);
                 }
             }
         });
@@ -119,7 +116,7 @@ public class TeamInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (teams != null) {
-                    displayTeamInfo(teams.get(3),dbHandler);
+                    new TeamInfoWindow(teams.get(3),dbHandler);
                 }
             }
         });
@@ -128,64 +125,13 @@ public class TeamInfo extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (teams != null) {
-                    displayTeamInfo(teams.get(4),dbHandler);
+                    new TeamInfoWindow(teams.get(4),dbHandler);
                 }
             }
         });
         setVisible(true);
     }
 
-    private void displayTeamInfo(Team team, DatabaseConnectionHandler dbHandler) {
-        StringBuilder teamInfo = new StringBuilder();
-
-        teamInfo.append("Team Name: ").append(team.getName()).append("\n");
-        teamInfo.append("Team ID: ").append(team.getTeam_id()).append("\n");
-        teamInfo.append("Arena: ").append(team.getAreana()).append("\n");
-
-        teamInfo.append("\n");
-        List<String> names = dbHandler.getTeamGames(team.getName());
-        if (!names.isEmpty()) {
-            teamInfo.append("Games: \n");
-            for (String name: names) {
-                teamInfo.append(" - ").append(name).append("\n");
-            }
-        } else {
-            teamInfo.append("No games scheduled\n");
-        }
-
-        teamInfo.append("\n");
-        List<TeamMember> members = dbHandler.getAllTeamMembers(team.getTeam_id());
-        if (!members.isEmpty()) {
-            teamInfo.append("Team Members: \n");
-            for (TeamMember member : members) {
-                teamInfo.append(" - ").append(member.getName()).append("\n");
-            }
-        } else {
-            teamInfo.append("No team members\n");
-        }
-
-        teamInfo.append("\n");
-        Owner owner = dbHandler.getOwner(team.getTeam_id());
-        teamInfo.append("Owner: ").append(owner.getName()).append("\n");
-        teamInfo.append(" - ").append("Age: ").append(owner.getAge()).append("\n");
-        teamInfo.append(" - ").append("Net Worth: ").append(owner.getNet_worth()).append("\n");
-
-
-        teamInfo.append("\n");
-        List<Sponsor> sponsors = dbHandler.getAllSponsors(team.getName());
-        if (!sponsors.isEmpty()) {
-            teamInfo.append("Sponsors: \n");
-            for (Sponsor sponsor : sponsors) {
-                teamInfo.append(" - ").append(sponsor.getName()).append("\n");
-                teamInfo.append("-").append(sponsor.getContributions()).append("\n").append("\n");
-            }
-        } else {
-            teamInfo.append("No sponsors\n");
-        }
-
-        // JOptionPane.showMessageDialog(this, teamInfo.toString());
-        new TeamInfoWindow(team,dbHandler);
-    }
     private void updateTitleSize(int newSize) {
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, newSize));
         titleLabel.setBounds(215, 45, titleLabel.getPreferredSize().width, titleLabel.getPreferredSize().height);

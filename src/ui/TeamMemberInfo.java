@@ -7,6 +7,7 @@ import model.Team;
 import model.TeamMember;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,48 +18,66 @@ import java.util.List;
 
 public class TeamMemberInfo extends JFrame {
     public TeamMemberInfo(DatabaseConnectionHandler dbHandler) {
-        setSize(600, 550);
+        setSize(615, 700);
         setTitle("TEAM MEMBERS DATABASE");
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(148, 103, 34));
+        Border roundedBorder = BorderFactory.createLineBorder(Color.white, 4, true);
 
-        JPanel backButtonPanel = new JPanel();
-        backButtonPanel.setLayout(new BorderLayout());
-        JButton backButton = new JButton("Back");
-        backButtonPanel.add(backButton, BorderLayout.EAST);
 
-        backButton.addActionListener(e -> {
-            this.dispose();
-        });
-
-        JButton addButton = new JButton("Add Player");
-        backButtonPanel.add(addButton, BorderLayout.WEST);
-
-        // Add Player
+        JButton addButton = new JButton("Add New Player");
+        addButton.setBounds(115,530,150,75);
+        addButton.setFont(new Font("Arial" ,Font.BOLD, 17));
+        addButton.setForeground(Color.black);
+        addButton.setBackground(Color.white);
+        addButton.setBorder(roundedBorder);
+        add(addButton);
         addButton.addActionListener(e -> {
             openAddPlayerDialog(dbHandler);
         });
 
-        getContentPane().add(backButtonPanel, BorderLayout.NORTH);
+
+        JButton backButton = new JButton("Back");
+        backButton.setBounds(340,530,150,75);
+        backButton.setFont(new Font("Arial" ,Font.BOLD, 17));
+        backButton.setBackground(Color.white);
+        backButton.setForeground(Color.black);
+        backButton.setBorder(roundedBorder);
+        add(backButton);
+        backButton.addActionListener(e -> {
+            this.dispose();
+        });
+
+
+
+
 
         DefaultListModel<String> memberListModel = new DefaultListModel<>();
         List<Team> teams = dbHandler.getAllTeams();
 
+        memberListModel.addElement("\n");
         for (Team team : teams) {
-            memberListModel.addElement(team.getName());
+            memberListModel.addElement("\n                                          " + team.getName());
             memberListModel.addElement("\n");
             for (TeamMember member : dbHandler.getAllTeamMembers(team.getTeam_id())) {
-                // String memberType = member instanceof Player ? "Player" : "Coach";
-                memberListModel.addElement(member.getPlayer_id() + ".  " + member.getName());
+                memberListModel.addElement("  " + member.getPlayer_id() + ".  " + member.getName());
             }
-            memberListModel.addElement("--------------------------------------------------------------");
+            memberListModel.addElement("\n");
+            memberListModel.addElement("   ----------------------------------------------------------------------------");
             memberListModel.addElement("\n");
         }
 
         JList<String> memberList = new JList<>(memberListModel);
+        memberList.setFont(new Font("Arial", Font.BOLD, 19));
         memberList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        memberList.setForeground(Color.white);
+        memberList.setBackground(new Color(185, 130, 38));
 
         JScrollPane scrollPane = new JScrollPane(memberList);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
+        setLayout(null);
+        scrollPane.setBounds(50,40,500,450);
+
+        getContentPane().add(scrollPane);
 
         memberList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
@@ -79,46 +98,84 @@ public class TeamMemberInfo extends JFrame {
 
     private void openAddPlayerDialog(DatabaseConnectionHandler dbhHandler) {
         JDialog dialog = new JDialog(this, "Add Player", true);
-        dialog.setLayout(new BorderLayout());
-        dialog.setSize(500, 400);
-        setLocationRelativeTo(null);
+        dialog.setSize(480, 600);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(null);
 
-        JPanel formPanel = new JPanel(new GridLayout(0, 2));
+
+        JLabel nameLabel = new JLabel("Name:");
+        JLabel ageLabel = new JLabel("Age:");
+        JLabel salaryLabel = new JLabel("Salary:");
+        JLabel positionLabel = new JLabel("Position:");
+        JLabel startDateLabel = new JLabel("Start Date:");
+        JLabel endDateLabel = new JLabel("End Date:");
+        JLabel teamLabel = new JLabel("Team:");
+
+
         JTextField nameField = new JTextField();
         JTextField ageField = new JTextField();
         JTextField salaryField = new JTextField();
         JTextField positionField = new JTextField();
         JTextField startDateField = new JTextField();
         JTextField endDateField = new JTextField();
-
-
-        startDateField.setText("2023-01-01");
-        endDateField.setText("2023-12-31");
-
-        formPanel.add(new JLabel("Name:"));
-        formPanel.add(nameField);
-        formPanel.add(new JLabel("Age:"));
-        formPanel.add(ageField);
-        formPanel.add(new JLabel("Salary:"));
-        formPanel.add(salaryField);
-        formPanel.add(new JLabel("Position:"));
-        formPanel.add(positionField);
-        formPanel.add(new JLabel("Start Date:"));
-        formPanel.add(startDateField);
-        formPanel.add(new JLabel("End Date:"));
-        formPanel.add(endDateField);
-
         JComboBox<String> teamComboBox = new JComboBox<>();
         for (Team team : dbhHandler.getAllTeams()) {
             teamComboBox.addItem(team.getName());
         }
 
-        formPanel.add(new JLabel("Team:"));
-        formPanel.add(teamComboBox);
+        nameLabel.setBounds(35,20,150,30);
+        ageLabel.setBounds(35,70,150,30);
+        salaryLabel.setBounds(35,120,150,30);
+        positionLabel.setBounds(35,170,150,30);
+        startDateLabel.setBounds(35,220,150,30);
+        endDateLabel.setBounds(35,270,150,30);
+        teamLabel.setBounds(35,320,150,30);
 
-        dialog.add(formPanel, BorderLayout.CENTER);
+        nameLabel.setFont(new Font("Arial",Font.BOLD,18));
+        ageLabel.setFont(new Font("Arial",Font.BOLD,18));
+        salaryLabel.setFont(new Font("Arial",Font.BOLD,18));
+        positionLabel.setFont(new Font("Arial",Font.BOLD,18));
+        startDateLabel.setFont(new Font("Arial",Font.BOLD,18));
+        endDateLabel.setFont(new Font("Arial",Font.BOLD,18));
+        teamLabel.setFont(new Font("Arial",Font.BOLD,18));
 
-        JButton submitButton = new JButton("Submit");
+        nameField.setBounds(180,20,220,35);
+        ageField.setBounds(180,70,220,35);
+        salaryField.setBounds(180,120,220,35);
+        positionField.setBounds(180,170,220,35);
+        startDateField.setBounds(180,220,220,35);
+        endDateField.setBounds(180,270,220,35);
+        teamComboBox.setBounds(180,320,220,35);
+
+        startDateField.setText("2023-01-01");
+        endDateField.setText("2023-12-31");
+
+
+        dialog.add(nameLabel);
+        dialog.add(ageLabel);
+        dialog.add(salaryLabel);
+        dialog.add(positionLabel);
+        dialog.add(startDateLabel);
+        dialog.add(endDateLabel);
+        dialog.add(teamLabel);
+
+
+        dialog.add(nameField);
+        dialog.add(ageField);
+        dialog.add(salaryField);
+        dialog.add(positionField);
+        dialog.add(startDateField);
+        dialog.add(endDateField);
+        dialog.add(teamComboBox);
+
+
+        JButton submitButton = new JButton("ADD PLAYER");
+        submitButton.setBounds(65,420,155,75);
+        submitButton.setBackground(Color.white);
+
+        JButton cancelButton = new JButton("CANCEL");
+        cancelButton.setBounds(260,420,155,75);
+        cancelButton.setBackground(Color.white);
 
         submitButton.addActionListener(e -> {
             String name = nameField.getText();
@@ -145,7 +202,12 @@ public class TeamMemberInfo extends JFrame {
 
         });
 
-        dialog.add(submitButton, BorderLayout.SOUTH);
+        cancelButton.addActionListener(e -> {
+            dialog.dispose();
+        });
+
+        dialog.add(cancelButton);
+        dialog.add(submitButton);
         dialog.setVisible(true);
     }
 
