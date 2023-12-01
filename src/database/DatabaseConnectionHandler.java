@@ -94,7 +94,6 @@ public class DatabaseConnectionHandler {
             preparedStatement.setString(2, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             {
-
                 while (resultSet.next()) {
                     String name1 = resultSet.getString("name1");
                     String name2 = resultSet.getString("name2");
@@ -142,11 +141,11 @@ public class DatabaseConnectionHandler {
     public List<Game> getAllGames(int yrr) {
         List<Game> games = new ArrayList<>();
 
-        try {
-            String query = "SELECT * FROM game g WHERE g.year = " + yrr;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
-
+        String query = "SELECT * FROM game g WHERE g.year = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, yrr);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     String gameDate = resultSet.getString("game_date");
                     int home_tid = resultSet.getInt("home_tid");
@@ -189,11 +188,12 @@ public class DatabaseConnectionHandler {
 
     public Player getPlayerByID(int id) {
         Player player = null;
-        try {
-            String query = "select position from player where pid = " + id;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
 
+        String query = "select position from player where pid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     String pos = resultSet.getString("position");
 
@@ -256,10 +256,12 @@ public class DatabaseConnectionHandler {
 
     public TeamMember getMemberByID(int id) {
         TeamMember member = null;
-        try {
-            String query = "select tm.*,t.name as teamname,t.arena from TEAMMEMBER tm, Team t where t.tid = tm.tid and tm.tmid = " + id;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "select tm.*,t.name as teamname,t.arena from TEAMMEMBER tm, Team t where t.tid = tm.tid and tm.tmid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
 
                 while (resultSet.next()) {
                     int tmid = resultSet.getInt("tmid");
@@ -286,10 +288,12 @@ public class DatabaseConnectionHandler {
     public List<TeamMember> getAllTeamMembers(int id) {
         List<TeamMember> teamMembers = new ArrayList<>();
 
-        try {
-            String query = "select tm.*, t.name as tname,t.arena from TeamMember tm, Team t where t.TID = " + id + " and t.tid = tm.tid";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "select tm.*, t.name as tname,t.arena from TeamMember tm, Team t where t.TID = ? and t.tid = tm.tid";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
 
                 while (resultSet.next()) {
                     int tmid = resultSet.getInt("tmid");
@@ -340,10 +344,12 @@ public class DatabaseConnectionHandler {
 
     public Referee getReferee(int id) {
         Referee ref = null;
-        try {
-            String query = "SELECT * from Referee where rid = " + id;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "SELECT * from Referee where rid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     int rid = resultSet.getInt("rid");
                     String name = resultSet.getString("name");
@@ -362,10 +368,12 @@ public class DatabaseConnectionHandler {
     // Projection
     public StatSheet getHomeStats(int ssid) {
         StatSheet stats = null;
-        try {
-            String query = "SELECT ssid, home_points, home_steals, home_assists, home_rebounds from Statsheet where ssid = " + ssid;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "SELECT ssid, home_points, home_steals, home_assists, home_rebounds from Statsheet where ssid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, ssid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     int ssid2 = resultSet.getInt("ssid");
                     int homepoints = resultSet.getInt("home_points");
@@ -385,10 +393,12 @@ public class DatabaseConnectionHandler {
 
     public StatSheet getAwayStats(int ssid) {
         StatSheet stats = null;
-        try {
-            String query = "SELECT ssid, away_points, away_steals, away_assists, away_rebounds from Statsheet where ssid = " + ssid;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "SELECT ssid, away_points, away_steals, away_assists, away_rebounds from Statsheet where ssid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, ssid);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     int ssid2 = resultSet.getInt("ssid");
                     int awaypoints = resultSet.getInt("away_points");
@@ -408,10 +418,11 @@ public class DatabaseConnectionHandler {
 
     public Owner getOwner(int id) {
         Owner owner = null;
-        try {
-            String query = "select os.oname as ownername,o.age,o.NET_WORTH from owns os, owner o where os.oname = o.name and os.tid = " + id;
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+        String query = "select os.oname as ownername,o.age,o.NET_WORTH from owns os, owner o where os.oname = o.name and os.tid = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
                 while (resultSet.next()) {
                     String oname = resultSet.getString("ownername");
                     int age = resultSet.getInt("age");

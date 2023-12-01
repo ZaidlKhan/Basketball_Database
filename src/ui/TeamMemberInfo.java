@@ -277,7 +277,7 @@ public class TeamMemberInfo extends JFrame {
 
 
         deleteButton.addActionListener(e -> deleteMember(member, dbHandler));
-        modifyButton.addActionListener(e -> modifyMember(member, dbHandler, tmid, textArea));
+        modifyButton.addActionListener(e -> modifyMember(member ,dialog, dbHandler, tmid, textArea));
 
         dialog.add(textArea);
         textArea.add(deleteButton);
@@ -312,7 +312,7 @@ public class TeamMemberInfo extends JFrame {
         return null;
     }
 
-    private void modifyMember(TeamMember member, DatabaseConnectionHandler dbHandler, int tmid, JTextArea textArea) {
+    private void modifyMember(TeamMember member,JDialog dialogg, DatabaseConnectionHandler dbHandler, int tmid, JTextArea textArea) {
         JDialog modifyDialog = new JDialog(this, "Modify Member", true);
         modifyDialog.setLayout(new GridLayout(0, 2));
         modifyDialog.setSize(300, 200);
@@ -365,8 +365,9 @@ public class TeamMemberInfo extends JFrame {
                     JOptionPane.showMessageDialog(modifyDialog, "Successfully updated information!");
                     modifyDialog.dispose();
                     System.out.println("Successfully updated member information!");
-                    this.dispose();
-                    new TeamMemberInfo(dbHandler);
+                    modifyDialog.dispose();
+                    dialogg.dispose();
+                    displayMemberInfo(tmid,dbHandler);
 
                 } else {
                     JOptionPane.showMessageDialog(modifyDialog, "Failed!, try again!");
