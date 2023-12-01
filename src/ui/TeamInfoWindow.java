@@ -14,7 +14,7 @@ public class TeamInfoWindow extends JFrame {
 
     public TeamInfoWindow(Team team, DatabaseConnectionHandler dbHandler) {
         setTitle("Team Information");
-        setSize(705, 525);
+        setSize(705, 550);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         JTextArea teamInfoTextArea = new JTextArea();
@@ -72,7 +72,7 @@ public class TeamInfoWindow extends JFrame {
         int selectedTeamId = team.getTeam_id();
         int totalSalary = dbHandler.getTotalSalaryForTeam(selectedTeamId);
         teamInfo.append("     Total Salary: " +
-                "\n     $").append(totalSalary).append("\n");
+                "\n           - $").append(totalSalary).append("\n");
 
         teamInfoTextArea.setText(teamInfo.toString());
         getContentPane().add(teamInfoTextArea);

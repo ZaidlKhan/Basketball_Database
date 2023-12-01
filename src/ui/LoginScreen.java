@@ -36,7 +36,7 @@ public class LoginScreen extends JFrame {
         usernameLabel.setBounds(120, 108, 200, 75);
 
         usernameField = new JTextField();
-        usernameField.setText("ora_sawhney7");
+        usernameField.setText("ora_");
         usernameField.setBounds(220, 123, 300, 40);
 
         passwordLabel = new JLabel("Password:");
@@ -44,7 +44,6 @@ public class LoginScreen extends JFrame {
         passwordLabel.setBounds(120, 168, 200, 75);
 
         passwordField = new JPasswordField();
-        passwordField.setText("a44616670");
         passwordField.setBounds(220, 183, 300, 40);
 
         loginButton = new JButton("Login");
