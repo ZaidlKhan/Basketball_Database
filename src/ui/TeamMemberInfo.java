@@ -227,44 +227,64 @@ public class TeamMemberInfo extends JFrame {
 
 
     private void displayMemberInfo(int tmid, DatabaseConnectionHandler dbHandler) {
+        Border roundedBorder = BorderFactory.createLineBorder(Color.white, 4, true);
+        JDialog dialog = new JDialog(this, "Player Information", true);
+        dialog.setSize(450, 400);
+        dialog.setLocationRelativeTo(null);
+        dialog.setLayout(null);
+        dialog.setBackground(new Color(148, 119, 59));
+
+
         TeamMember member = dbHandler.getMemberByID(tmid);
 
-        String info = "\nName: " + member.getName() +
-                "\nAge: " + member.getAge() +
-                "\nTeam: " + member.getTeam().getName() +
-                "\nMember ID: " + member.getPlayer_id() +
-                "\n\nContract Start: " + member.getStart_date() +
-                "\nContract End: " + member.getEnd_date() +
-                "\n\nSalary: $" + member.getSalary();
+        String info = "\n\n         Name: " + member.getName() +
+                "\n         Age: " + member.getAge() +
+                "\n         Team: " + member.getTeam().getName() +
+                "\n         Member ID: " + member.getPlayer_id() +
+                "\n\n         Contract Start: " + member.getStart_date() +
+                "\n         Contract End: " + member.getEnd_date() +
+                "\n\n         Salary: $" + member.getSalary();
 
 
         Player playerr = dbHandler.getPlayerByID(tmid);
         if (!playerr.getPosition().equalsIgnoreCase("coach")) {
-            info += "\nPosition: " + playerr.getPosition() + "\n\n";
+            info += "\n         Position: " + playerr.getPosition() + "\n\n";
         } else {
-            info += "\nRole: " + playerr.getPosition() + "\n\n\n";
+            info += "\n         Role: " + playerr.getPosition() + "\n\n\n";
         }
 
         JTextArea textArea = new JTextArea(info);
         textArea.setEditable(false);
+        textArea.setFont(new Font("Arial", Font.BOLD, 16));
+        textArea.setBounds(0, 0, 450, 400);
+        textArea.setForeground(Color.white);
+        textArea.setBackground(new Color(148, 119, 59));
 
         JButton deleteButton = new JButton("Delete");
         JButton modifyButton = new JButton("Modify");
 
-        int x = 0;
+        deleteButton.setBounds(240, 250, 140, 60);
+        deleteButton.setFont(new Font("Arial",Font.BOLD,15));
+        deleteButton.setFocusPainted(false);
+        deleteButton.setBackground(Color.white);
+        deleteButton.setBorder(roundedBorder);
+
+        modifyButton.setBounds(50, 250, 140, 60);
+        modifyButton.setFont(new Font("Arial",Font.BOLD,15));
+        modifyButton.setFocusPainted(false);
+        modifyButton.setBackground(Color.white);
+        modifyButton.setBorder(roundedBorder);
+
+
         deleteButton.addActionListener(e -> deleteMember(member, dbHandler));
         modifyButton.addActionListener(e -> modifyMember(member, dbHandler, tmid, textArea));
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(textArea, BorderLayout.CENTER);
+        dialog.add(textArea);
+        textArea.add(deleteButton);
+        textArea.add(modifyButton);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(deleteButton);
-        buttonPanel.add(modifyButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
+        dialog.setVisible(true);
 
-        JOptionPane.showConfirmDialog(this, panel, "Member Information", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE);
     }
 
 
