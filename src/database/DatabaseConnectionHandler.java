@@ -223,16 +223,17 @@ public class DatabaseConnectionHandler {
         }
     }
 
-    public int updateMember(TeamMember member, int age, int salary, String start, String end) {
+    public int updateMember(TeamMember member, int teamID, int age, int salary, String start, String end) {
         int x = 0;
         try {
-            String query = "Update TEAMMEMBER set age = ?, salary = ?, start_date = ?, END_DATE = ? where  tmid = ?";
+            String query = "Update TEAMMEMBER set tid = ?, age = ?, salary = ?, start_date = ?, END_DATE = ? where  tmid = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setInt(1, age);
-            ps.setInt(2, salary);
-            ps.setDate(3, java.sql.Date.valueOf(start));
-            ps.setDate(4, java.sql.Date.valueOf(end));
-            ps.setInt(5, member.getPlayer_id());
+            ps.setInt(1, teamID);
+            ps.setInt(2, age);
+            ps.setInt(3, salary);
+            ps.setDate(4, java.sql.Date.valueOf(start));
+            ps.setDate(5, java.sql.Date.valueOf(end));
+            ps.setInt(6, member.getPlayer_id());
 
             int rowCount = ps.executeUpdate();
             if (rowCount == 0) {

@@ -26,8 +26,8 @@ public class TeamMemberInfo extends JFrame {
 
 
         JButton addButton = new JButton("Add New Player");
-        addButton.setBounds(115,530,150,75);
-        addButton.setFont(new Font("Arial" ,Font.BOLD, 17));
+        addButton.setBounds(115, 530, 150, 75);
+        addButton.setFont(new Font("Arial", Font.BOLD, 17));
         addButton.setForeground(Color.black);
         addButton.setBackground(Color.white);
         addButton.setBorder(roundedBorder);
@@ -38,8 +38,8 @@ public class TeamMemberInfo extends JFrame {
 
 
         JButton backButton = new JButton("Back");
-        backButton.setBounds(340,530,150,75);
-        backButton.setFont(new Font("Arial" ,Font.BOLD, 17));
+        backButton.setBounds(340, 530, 150, 75);
+        backButton.setFont(new Font("Arial", Font.BOLD, 17));
         backButton.setBackground(Color.white);
         backButton.setForeground(Color.black);
         backButton.setBorder(roundedBorder);
@@ -47,9 +47,6 @@ public class TeamMemberInfo extends JFrame {
         backButton.addActionListener(e -> {
             this.dispose();
         });
-
-
-
 
 
         DefaultListModel<String> memberListModel = new DefaultListModel<>();
@@ -75,7 +72,7 @@ public class TeamMemberInfo extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(memberList);
         setLayout(null);
-        scrollPane.setBounds(50,40,500,450);
+        scrollPane.setBounds(50, 40, 500, 450);
 
         getContentPane().add(scrollPane);
 
@@ -101,8 +98,6 @@ public class TeamMemberInfo extends JFrame {
         dialog.setSize(480, 600);
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(null);
-
-
         JLabel nameLabel = new JLabel("Name:");
         JLabel ageLabel = new JLabel("Age:");
         JLabel salaryLabel = new JLabel("Salary:");
@@ -110,8 +105,6 @@ public class TeamMemberInfo extends JFrame {
         JLabel startDateLabel = new JLabel("Start Date:");
         JLabel endDateLabel = new JLabel("End Date:");
         JLabel teamLabel = new JLabel("Team:");
-
-
         JTextField nameField = new JTextField();
         JTextField ageField = new JTextField();
         JTextField salaryField = new JTextField();
@@ -123,29 +116,29 @@ public class TeamMemberInfo extends JFrame {
             teamComboBox.addItem(team.getName());
         }
 
-        nameLabel.setBounds(35,20,150,30);
-        ageLabel.setBounds(35,70,150,30);
-        salaryLabel.setBounds(35,120,150,30);
-        positionLabel.setBounds(35,170,150,30);
-        startDateLabel.setBounds(35,220,150,30);
-        endDateLabel.setBounds(35,270,150,30);
-        teamLabel.setBounds(35,320,150,30);
+        nameLabel.setBounds(35, 20, 150, 30);
+        ageLabel.setBounds(35, 70, 150, 30);
+        salaryLabel.setBounds(35, 120, 150, 30);
+        positionLabel.setBounds(35, 170, 150, 30);
+        startDateLabel.setBounds(35, 220, 150, 30);
+        endDateLabel.setBounds(35, 270, 150, 30);
+        teamLabel.setBounds(35, 320, 150, 30);
 
-        nameLabel.setFont(new Font("Arial",Font.BOLD,18));
-        ageLabel.setFont(new Font("Arial",Font.BOLD,18));
-        salaryLabel.setFont(new Font("Arial",Font.BOLD,18));
-        positionLabel.setFont(new Font("Arial",Font.BOLD,18));
-        startDateLabel.setFont(new Font("Arial",Font.BOLD,18));
-        endDateLabel.setFont(new Font("Arial",Font.BOLD,18));
-        teamLabel.setFont(new Font("Arial",Font.BOLD,18));
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        ageLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        salaryLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        positionLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        startDateLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        endDateLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        teamLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
-        nameField.setBounds(180,20,220,35);
-        ageField.setBounds(180,70,220,35);
-        salaryField.setBounds(180,120,220,35);
-        positionField.setBounds(180,170,220,35);
-        startDateField.setBounds(180,220,220,35);
-        endDateField.setBounds(180,270,220,35);
-        teamComboBox.setBounds(180,320,220,35);
+        nameField.setBounds(180, 20, 220, 35);
+        ageField.setBounds(180, 70, 220, 35);
+        salaryField.setBounds(180, 120, 220, 35);
+        positionField.setBounds(180, 170, 220, 35);
+        startDateField.setBounds(180, 220, 220, 35);
+        endDateField.setBounds(180, 270, 220, 35);
+        teamComboBox.setBounds(180, 320, 220, 35);
 
         startDateField.setText("2023-01-01");
         endDateField.setText("2023-12-31");
@@ -158,8 +151,6 @@ public class TeamMemberInfo extends JFrame {
         dialog.add(startDateLabel);
         dialog.add(endDateLabel);
         dialog.add(teamLabel);
-
-
         dialog.add(nameField);
         dialog.add(ageField);
         dialog.add(salaryField);
@@ -170,35 +161,42 @@ public class TeamMemberInfo extends JFrame {
 
 
         JButton submitButton = new JButton("ADD PLAYER");
-        submitButton.setBounds(65,420,155,75);
+        submitButton.setBounds(65, 420, 155, 75);
         submitButton.setBackground(Color.white);
 
         JButton cancelButton = new JButton("CANCEL");
-        cancelButton.setBounds(260,420,155,75);
+        cancelButton.setBounds(260, 420, 155, 75);
         cancelButton.setBackground(Color.white);
 
         submitButton.addActionListener(e -> {
-            String name = nameField.getText();
-            int age = Integer.parseInt(ageField.getText());
-            int salary = Integer.parseInt(salaryField.getText());
-            String position = positionField.getText();
-            Date start_date = java.sql.Date.valueOf(startDateField.getText());
-            Date end_date = java.sql.Date.valueOf(endDateField.getText());
+            try {
+                String name = nameField.getText();
+                int age = Integer.parseInt(ageField.getText());
+                int salary = Integer.parseInt(salaryField.getText());
+                String position = positionField.getText();
+                Date start_date = java.sql.Date.valueOf(startDateField.getText());
+                Date end_date = java.sql.Date.valueOf(endDateField.getText());
 
-            String team = (String) teamComboBox.getSelectedItem();
-            Team teamobj = getTeamFromString(team, dbhHandler);
-            int tid = teamobj.getTeam_id();
-            int tmid = (dbhHandler.getMaxTeamID()) + 1;
+                String team = (String) teamComboBox.getSelectedItem();
+                Team teamobj = getTeamFromString(team, dbhHandler);
+                int tid = teamobj.getTeam_id();
+                int tmid = (dbhHandler.getMaxTeamID()) + 1;
 
-            dbhHandler.insertTeamMember(tmid, name, tid, start_date, end_date, salary, age);
-            dbhHandler.insertPlayer(tmid,position);
+                dbhHandler.insertTeamMember(tmid, name, tid, start_date, end_date, salary, age);
+                dbhHandler.insertPlayer(tmid, position);
 
 
-            JOptionPane.showMessageDialog(dialog, "Successfully added new member!");
-            System.out.println("Successfully added new member with tmid " + tmid);
-            dialog.dispose();
-            this.dispose();
-            new TeamMemberInfo(dbhHandler);
+                JOptionPane.showMessageDialog(dialog, "Successfully added new member!");
+                System.out.println("Successfully added new member with tmid " + tmid);
+                dialog.dispose();
+                this.dispose();
+                new TeamMemberInfo(dbhHandler);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(dialog, "Invalid Input! Try again!");
+            } catch (IllegalArgumentException ex2) {
+                JOptionPane.showMessageDialog(dialog, "Invalid Date Input! Try again!");
+            }
+
 
         });
 
@@ -279,6 +277,7 @@ public class TeamMemberInfo extends JFrame {
 
         if (response == JOptionPane.YES_OPTION) {
             dbHandler.deleteTeamMember(member.getPlayer_id());
+            JOptionPane.showMessageDialog(this, "Successfully removed Team Member!");
             this.dispose();
             new TeamMemberInfo(dbHandler);
         }
@@ -306,10 +305,16 @@ public class TeamMemberInfo extends JFrame {
         LocalDateTime startD = LocalDateTime.parse(member.getStart_date(), formatter);
         LocalDateTime endD = LocalDateTime.parse(member.getEnd_date(), formatter);
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String start_Date= startD.format(outputFormatter);
+        String start_Date = startD.format(outputFormatter);
         String end_Date = endD.format(outputFormatter);
         JTextField startDateField = new JTextField(start_Date);
         JTextField endDateField = new JTextField(end_Date);
+
+        JComboBox<String> teamComboBox = new JComboBox<>();
+        for (Team team : dbHandler.getAllTeams()) {
+            teamComboBox.addItem(team.getName());
+        }
+
 
         modifyDialog.add(new JLabel("Age:"));
         modifyDialog.add(ageField);
@@ -319,16 +324,23 @@ public class TeamMemberInfo extends JFrame {
         modifyDialog.add(startDateField);
         modifyDialog.add(new JLabel("Contract End:"));
         modifyDialog.add(endDateField);
+        modifyDialog.add(new JLabel("Team :"));
+        modifyDialog.add(teamComboBox);
 
 
         JButton saveButton = new JButton("Save");
         saveButton.addActionListener(e -> {
+            try {
                 int age = Integer.parseInt(ageField.getText());
                 int salary = Integer.parseInt(salaryField.getText());
                 String startDate = startDateField.getText();
                 String endDate = endDateField.getText();
 
-                int x = dbHandler.updateMember(member,age,salary,startDate,endDate);
+                String team = (String) teamComboBox.getSelectedItem();
+                Team teamobj = getTeamFromString(team, dbHandler);
+                int teamID = teamobj.getTeam_id();
+
+                int x = dbHandler.updateMember(member, teamID, age, salary, startDate, endDate);
                 if (x == 1) {
                     JOptionPane.showMessageDialog(modifyDialog, "Successfully updated information!");
                     modifyDialog.dispose();
@@ -340,6 +352,12 @@ public class TeamMemberInfo extends JFrame {
                     JOptionPane.showMessageDialog(modifyDialog, "Failed!, try again!");
                     System.out.println("Failed! Try Again!");
                 }
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Invalid Input! Try again!");
+            } catch (IllegalArgumentException ex2) {
+                JOptionPane.showMessageDialog(this, "Invalid Date Input! Try again!");
+            }
 
         });
 

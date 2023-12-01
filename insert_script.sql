@@ -1,3 +1,9 @@
+---------------------------------------------------------------------------------------
+
+--  INSERT STATEMENTS FOR THE DATABASE
+
+----------------------------------------------------------------------------------------
+
 INSERT INTO Location (arena, city) VALUES ('Staples Center', 'Los Angeles');
 INSERT INTO Location (arena, city) VALUES ('Chase Center', 'Golden State');
 INSERT INTO Location (arena, city) VALUES ('TD Garden', 'Boston');
@@ -37,8 +43,6 @@ INSERT INTO Age (dob, age) VALUES ( DATE '1991-11-18', 31);
 INSERT INTO Age (dob, age) VALUES ( DATE '1974-02-15', 49);
 INSERT INTO Age (dob, age) VALUES ( DATE '1996-12-08', 26);
 INSERT INTO Age (dob, age) VALUES ( DATE '1972-03-30', 51);
-
-
 
 INSERT INTO TeamMember values (1, 'LeBron James', 1, DATE '2022-01-01', DATE '2023-12-31', 40000000, 37);
 INSERT INTO TeamMember values (2, 'Stephen Curry', 1, DATE'2022-01-01', DATE '2023-12-31', 43000000, 33);
@@ -193,6 +197,12 @@ INSERT INTO Sponsors (sname, tid) VALUES ('Adidas', 2);
 INSERT INTO Sponsors (sname, tid) VALUES ('Coca-Cola', 3);
 INSERT INTO Sponsors (sname, tid) VALUES ('Verizon', 4);
 INSERT INTO Sponsors (sname, tid) VALUES ('IBM', 5);
+INSERT INTO SPONSORS VALUES ('X Corp', 5);
+INSERT INTO SPONSORS VALUES ('AC Corporation', 4);
+INSERT INTO SPONSORS VALUES ('SportsTech Inc', 3);
+INSERT INTO SPONSORS VALUES ('City Bank', 2);
+INSERT INTO SPONSORS VALUES ('Global Motors', 1);
+
 
 
 UPDATE TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 1 and age < 25);
@@ -202,6 +212,7 @@ Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-3
 Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tmid = 52 or tmid = 53);
 Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 53;
 Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 54;
+
 
 INSERT INTO HasPlayed (home_tid, away_tid) VALUES (1, 2);
 INSERT INTO HasPlayed (home_tid, away_tid) VALUES (2, 3);
