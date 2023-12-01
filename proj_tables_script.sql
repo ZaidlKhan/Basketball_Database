@@ -171,6 +171,12 @@ INSERT INTO Location (arena, city) VALUES ('Chase Center', 'Golden State');
 INSERT INTO Location (arena, city) VALUES ('TD Garden', 'Boston');
 INSERT INTO Location (arena, city) VALUES ('United Center', 'Chicago');
 INSERT INTO Location (arena, city) VALUES ('Toyota Center', 'Houston');
+INSERT INTO Location (arena, city) VALUES ('Stadium A', 'New York');
+INSERT INTO Location (arena, city) VALUES ('Arena B', 'L.A');
+INSERT INTO Location (arena, city) VALUES ('Coliseum C', 'S.F');
+INSERT INTO Location (arena, city) VALUES ('Field D', 'Miami');
+INSERT INTO Location (arena, city) VALUES ('Center E', 'San Francisco');
+
 
 INSERT INTO Team (tid, name, arena) VALUES (1, 'Lakers', 'Staples Center');
 INSERT INTO Team (tid, name, arena) VALUES (2, 'Warriors', 'Chase Center');
@@ -193,6 +199,14 @@ INSERT INTO Age (dob, age) VALUES ( DATE '1957-05-26', 65);
 INSERT INTO Age (dob, age) VALUES ( DATE '1959-04-21', 63);
 INSERT INTO Age (dob, age) VALUES ( DATE '1963-02-17', 59);
 INSERT INTO Age (dob, age) VALUES ( DATE '1956-07-29', 71);
+INSERT INTO Age (dob, age) VALUES ( DATE '1990-05-12', 33);
+INSERT INTO Age (dob, age) VALUES ( DATE '1995-04-05', 28);
+INSERT INTO Age (dob, age) VALUES ( DATE '1991-11-18', 31);
+INSERT INTO Age (dob, age) VALUES ( DATE '1974-02-15', 49);
+INSERT INTO Age (dob, age) VALUES ( DATE '1996-12-08', 26);
+INSERT INTO Age (dob, age) VALUES ( DATE '1972-03-30', 51);
+
+
 
 INSERT INTO TeamMember values (1, 'LeBron James', 1, DATE '2022-01-01', DATE '2023-12-31', 40000000, 37);
 INSERT INTO TeamMember values (2, 'Stephen Curry', 1, DATE'2022-01-01', DATE '2023-12-31', 43000000, 33);
@@ -335,12 +349,28 @@ INSERT INTO Sponsor (name, contribution) VALUES ('Adidas', 3000000);
 INSERT INTO Sponsor (name, contribution) VALUES ('Coca-Cola', 2000000);
 INSERT INTO Sponsor (name, contribution) VALUES ('Verizon', 1500000);
 INSERT INTO Sponsor (name, contribution) VALUES ('IBM', 1000000);
+INSERT INTO Sponsor VALUES ('AC Corporation', 500000);
+INSERT INTO Sponsor VALUES ('X Corp', 7500000);
+INSERT INTO Sponsor VALUES ('SportsTech Inc', 1000000);
+INSERT INTO Sponsor VALUES ('City Bank', 30006770);
+INSERT INTO Sponsor VALUES ('Global Motors', 80066540);
+
 
 INSERT INTO Sponsors (sname, tid) VALUES ('Nike', 1);
 INSERT INTO Sponsors (sname, tid) VALUES ('Adidas', 2);
 INSERT INTO Sponsors (sname, tid) VALUES ('Coca-Cola', 3);
 INSERT INTO Sponsors (sname, tid) VALUES ('Verizon', 4);
 INSERT INTO Sponsors (sname, tid) VALUES ('IBM', 5);
+
+
+UPDATE TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 1 and age < 25);
+Update TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 and age < 25);
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 3 or tid = 4) and age > 25;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 or tid = 5) and age > 25;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tmid = 52 or tmid = 53);
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 53;
+Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 54;
+
 
 INSERT INTO HasPlayed (home_tid, away_tid) VALUES (1, 2);
 INSERT INTO HasPlayed (home_tid, away_tid) VALUES (2, 3);
@@ -374,6 +404,16 @@ INSERT INTO StatSheet VALUES (7, 105, 102, 8, 9, 24, 21, 39, 40);
 INSERT INTO StatSheet VALUES (8, 115, 112, 11, 10, 29, 25, 41, 38);
 INSERT INTO StatSheet VALUES (9, 100, 96, 7, 6, 23, 19, 37, 35);
 INSERT INTO StatSheet VALUES (10, 118, 115, 10, 11, 27, 24, 43, 41);
+INSERT INTO StatSheet VALUES (11, 122, 120, 13, 11, 32, 28, 46, 43);
+INSERT INTO StatSheet VALUES (12, 99, 104, 7, 8, 21, 20, 37, 39);
+INSERT INTO StatSheet VALUES (13, 114, 110, 9, 9, 27, 23, 43, 36);
+INSERT INTO StatSheet VALUES (14, 107, 104, 8, 10, 25, 22, 40, 41);
+INSERT INTO StatSheet VALUES (15, 123, 122, 14, 12, 34, 30, 48, 45);
+INSERT INTO StatSheet VALUES (16, 102, 100, 7, 7, 24, 19, 39, 37);
+INSERT INTO StatSheet VALUES (17, 116, 114, 10, 11, 28, 25, 42, 40);
+INSERT INTO StatSheet VALUES (18, 108, 106, 9, 9, 26, 23, 41, 38);
+INSERT INTO StatSheet VALUES (19, 95, 98, 6, 7, 22, 18, 36, 40);
+INSERT INTO StatSheet VALUES (20, 110, 115, 11, 10, 30, 26, 44, 42);
 
 INSERT INTO Game VALUES ( DATE '2020-04-15', 1, 2, '105-100', 1, 2020, 1, 'Staples Center');
 INSERT INTO Game VALUES ( DATE '2019-02-20', 2, 3, '110-112', 2, 2019, 2, 'Chase Center');
@@ -385,14 +425,22 @@ INSERT INTO Game VALUES ( DATE '2022-07-12', 3, 5, '105-102', 7, 2022, 7, 'TD Ga
 INSERT INTO Game VALUES ( DATE '2022-08-28', 1, 3, '115-112', 8, 2022, 8, 'Staples Center');
 INSERT INTO Game VALUES ( DATE '2023-09-14', 4, 1, '100-96', 9, 2023, 9, 'United Center');
 INSERT INTO Game VALUES ( DATE '2020-05-30', 5, 2, '118-115', 10, 2020, 10, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2020-01-20', 4, 1, '118-115', 11, 2020, 3, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2020-02-10', 3, 4, '118-115', 12, 2020, 2, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2019-05-13', 1, 3, '118-115', 13, 2019, 1, 'TD Garden');
+INSERT INTO Game VALUES ( DATE '2019-04-21', 4, 2, '118-115', 14, 2019, 4, 'United Center');
+INSERT INTO Game VALUES ( DATE '2021-07-13', 5, 3, '118-115', 15, 2021, 5, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2021-08-16', 1, 5, '118-115', 16, 2021, 6, 'TD Garden');
+INSERT INTO Game VALUES ( DATE '2022-02-25', 3, 2, '118-115', 17, 2022, 7, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2022-11-16', 1, 2, '118-115', 18, 2022, 8, 'United Center');
+INSERT INTO Game VALUES ( DATE '2023-05-19', 4, 3, '118-115', 19, 2023, 9, 'Toyota Center');
+INSERT INTO Game VALUES ( DATE '2023-12-21', 3, 1, '118-115', 20, 2023, 10, 'Staples Center');
 
-UPDATE TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 1 and age < 25);
-Update TEAMMEMBER set start_date = DATE '2017-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 and age < 25);
-Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 3 or tid = 4) and age > 25;
-Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tid = 2 or tid = 5) and age > 25;
-Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where (tmid = 52 or tmid = 53);
-Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 53;
-Update TEAMMEMBER set start_date = DATE '2018-01-01', END_DATE = DATE '2025-12-31' where  tmid = 54;
+
+
+
+
+
 
 
 

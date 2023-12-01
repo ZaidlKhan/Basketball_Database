@@ -59,6 +59,7 @@ public class DatabaseConnectionHandler {
         try {
             String query = "SELECT * FROM season";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 while (resultSet.next()) {
@@ -81,10 +82,15 @@ public class DatabaseConnectionHandler {
     public List<String> getTeamGames(String name) {
         List<String> gameNames = new ArrayList<>();
 
-        try {
-            String query = "select t1.name as name1,t2.name as name2 from game g, team t1, team t2 where g.HOME_TID = t1.TID and g.AWAY_TID = t2.TID and (t1.name = " + " '" + name + "'" + " or t2.name = " + "'" + name + "' " + ")";
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-                 ResultSet resultSet = preparedStatement.executeQuery()) {
+
+        String query = "SELECT t1.name as name1,t2.name as name2 " +
+                    "FROM game g, team t1, team t2 " +
+                      "WHERE g.HOME_TID = t1.TID AND g.AWAY_TID = t2.TID AND (t1.name = ? or t2.name = ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            {
 
                 while (resultSet.next()) {
                     String name1 = resultSet.getString("name1");
@@ -178,7 +184,7 @@ public class DatabaseConnectionHandler {
         return max;
     }
 
-    public Player getPlayerByID (int id) {
+    public Player getPlayerByID(int id) {
         Player player = null;
         try {
             String query = "select position from player where pid = " + id;
@@ -199,7 +205,7 @@ public class DatabaseConnectionHandler {
         return player;
     }
 
-    public void deleteTeamMember (int memberID) {
+    public void deleteTeamMember(int memberID) {
         try {
             String query = "DELETE FROM TeamMember WHERE tmid = ?";
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -224,8 +230,8 @@ public class DatabaseConnectionHandler {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setInt(1, age);
             ps.setInt(2, salary);
-            ps.setDate(3,java.sql.Date.valueOf(start));
-            ps.setDate(4,java.sql.Date.valueOf(end));
+            ps.setDate(3, java.sql.Date.valueOf(start));
+            ps.setDate(4, java.sql.Date.valueOf(end));
             ps.setInt(5, member.getPlayer_id());
 
             int rowCount = ps.executeUpdate();
@@ -244,7 +250,7 @@ public class DatabaseConnectionHandler {
         return x;
     }
 
-    public TeamMember getMemberByID (int id) {
+    public TeamMember getMemberByID(int id) {
         TeamMember member = null;
         try {
             String query = "select tm.*,t.name as teamname,t.arena from TEAMMEMBER tm, Team t where t.tid = tm.tid and tm.tmid = " + id;
@@ -478,7 +484,7 @@ public class DatabaseConnectionHandler {
     }
 
     private void rollbackConnection() {
-        try  {
+        try {
             connection.rollback();
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
