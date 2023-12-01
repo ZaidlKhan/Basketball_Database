@@ -46,17 +46,20 @@ public class MainMenu extends JFrame {
         JButton gameInfobutton = new JButton("GAME INFORMATION");
         JButton teamMemberInfobutton = new JButton("PLAYER INFORMATION");
         JButton exitButton = new JButton("Exit");
+        JButton resetButton = new JButton("RESET");
 
         teamInfobutton.setBounds(130, 310, buttonWidth, buttonHeight);
         gameInfobutton.setBounds(390, 310, buttonWidth, buttonHeight);
         teamMemberInfobutton.setBounds(650, 310, buttonWidth, buttonHeight);
         exitButton.setBounds(820, 460, buttonWidth - 100, buttonHeight - 40);
+        resetButton.setBounds(60,40,buttonWidth - 100, buttonHeight - 40);
 
         Font buttonFont = teamInfobutton.getFont();
         teamInfobutton.setFont(new Font(buttonFont.getName(), Font.BOLD, (int)16.5));
         gameInfobutton.setFont(new Font(buttonFont.getName(), Font.BOLD, (int)16.5));
         teamMemberInfobutton.setFont(new Font(buttonFont.getName(), Font.BOLD, (int)17.5));
         exitButton.setFont(new Font(buttonFont.getName(), Font.BOLD, (int)13));
+        resetButton.setFont(new Font(buttonFont.getName(), Font.BOLD, (int)13));
 
         teamInfobutton.setBackground(new Color(183, 121, 28));
         teamInfobutton.setForeground(Color.white);
@@ -66,19 +69,24 @@ public class MainMenu extends JFrame {
         teamMemberInfobutton.setForeground(Color.white);
         exitButton.setBackground(Color.white);
         exitButton.setForeground(Color.black);
+        resetButton.setBackground(Color.white);
+        resetButton.setForeground(Color.black);
 
         Border roundedBorder = BorderFactory.createLineBorder(Color.white, 4, true);
         teamInfobutton.setBorder(roundedBorder);
         gameInfobutton.setBorder(roundedBorder);
         teamMemberInfobutton.setBorder(roundedBorder);
+        resetButton.setBorder(roundedBorder);
 
         teamMemberInfobutton.setFocusPainted(false);
         teamInfobutton.setFocusPainted(false);
         gameInfobutton.setFocusPainted(false);
+        resetButton.setFocusPainted(false);
 
         add(teamInfobutton);
         add(gameInfobutton);
         add(teamMemberInfobutton);
+        add(resetButton);
         add(exitButton);
 
         teamInfobutton.addActionListener(new ActionListener() {
@@ -106,6 +114,14 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        resetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                dbHandler.executeSQLScript();
             }
         });
 

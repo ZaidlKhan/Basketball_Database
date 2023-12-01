@@ -3,6 +3,9 @@ package database;
 import model.*;
 import util.PrintablePreparedStatement;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +87,8 @@ public class DatabaseConnectionHandler {
 
 
         String query = "SELECT t1.name as name1,t2.name as name2 " +
-                    "FROM game g, team t1, team t2 " +
-                      "WHERE g.HOME_TID = t1.TID AND g.AWAY_TID = t2.TID AND (t1.name = ? or t2.name = ?)";
+                "FROM game g, team t1, team t2 " +
+                "WHERE g.HOME_TID = t1.TID AND g.AWAY_TID = t2.TID AND (t1.name = ? or t2.name = ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, name);
@@ -490,5 +493,48 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
+    }
+
+
+    public void executeSQLScript() {
+        String[] sqlScript = readTextFile("src/runScript.txt");
+        int count = 0;
+        for (String sqlStatement : sqlScript) {
+            try {
+                PrintablePreparedStatement preparedStatement = new PrintablePreparedStatement(connection.prepareStatement(sqlStatement), sqlStatement, false);
+                preparedStatement.executeUpdate();
+
+                connection.commit();
+                preparedStatement.close();
+                count++;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("SQL script executed successfully.");
+        System.out.println("Total executed commands :" + count);
+
+
+    }
+
+    public static String[] readTextFile(String filePath) {
+        List<String> statements = new ArrayList<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            StringBuilder currentStatement = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                currentStatement.append(line.trim());
+                if (line.trim().endsWith(";")) {
+                    statements.add(currentStatement.substring(0, currentStatement.length() - 1).trim());
+                    currentStatement = new StringBuilder();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return statements.toArray(new String[0]);
     }
 }
