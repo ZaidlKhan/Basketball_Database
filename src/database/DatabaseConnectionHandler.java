@@ -44,11 +44,11 @@ public class DatabaseConnectionHandler {
             if (connection != null) {
                 connection.close();
             }
-
             connection = DriverManager.getConnection(ORACLE_URL, username, password);
             connection.setAutoCommit(false);
 
             System.out.println("\nConnected to Oracle!");
+
             return true;
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
@@ -62,14 +62,12 @@ public class DatabaseConnectionHandler {
         try {
             String query = "SELECT * FROM season";
             try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-
                  ResultSet resultSet = preparedStatement.executeQuery()) {
 
                 while (resultSet.next()) {
                     int year = resultSet.getInt("year");
                     String startDate = resultSet.getString("start_date");
                     String endDate = resultSet.getString("end_date");
-
 
                     Season season = new Season(year, startDate, endDate);
                     seasons.add(season);
@@ -78,13 +76,12 @@ public class DatabaseConnectionHandler {
         } catch (SQLException e) {
             System.out.println(EXCEPTION_TAG + " " + e.getMessage());
         }
-
         return seasons;
     }
 
+    // SELECTION QUERY
     public List<String> getTeamGames(String name) {
         List<String> gameNames = new ArrayList<>();
-
 
         String query = "SELECT t1.name as name1,t2.name as name2 " +
                 "FROM game g, team t1, team t2 " +
@@ -97,7 +94,6 @@ public class DatabaseConnectionHandler {
                 while (resultSet.next()) {
                     String name1 = resultSet.getString("name1");
                     String name2 = resultSet.getString("name2");
-
                     String str = name1.trim() + " VS " + name2.trim();
                     gameNames.add(str);
                 }
@@ -109,9 +105,9 @@ public class DatabaseConnectionHandler {
         return gameNames;
     }
 
+    // JOIN QUERY
     public List<Sponsor> getAllSponsors(String name) {
         List<Sponsor> sponsors = new ArrayList<>();
-
         try {
             String query = "SELECT s.name as sponsor, s.CONTRIBUTION " +
                     "FROM sponsors ss " +
@@ -208,6 +204,7 @@ public class DatabaseConnectionHandler {
         return player;
     }
 
+    // DELETE QUERY
     public void deleteTeamMember(int memberID) {
         try {
             String query = "DELETE FROM TeamMember WHERE tmid = ?";
@@ -226,6 +223,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // UPDATE QUERY
     public int updateMember(TeamMember member, int teamID, int age, int salary, String start, String end) {
         int x = 0;
         try {
@@ -365,7 +363,7 @@ public class DatabaseConnectionHandler {
         return ref;
     }
 
-    // Projection
+    // PROJECTION QUERY
     public StatSheet getHomeStats(int ssid) {
         StatSheet stats = null;
 
@@ -391,6 +389,7 @@ public class DatabaseConnectionHandler {
         return stats;
     }
 
+    // PROJECTION QUERY
     public StatSheet getAwayStats(int ssid) {
         StatSheet stats = null;
 
@@ -438,6 +437,7 @@ public class DatabaseConnectionHandler {
 
     }
 
+    // INSERT QUERY
     public void insertTeamMember(int tmid, String name, int tid, Date start, Date end, int salary, int age) {
         try {
             String query = "INSERT INTO TeamMember VALUES (?,?,?,?,?,?,?)";
@@ -459,6 +459,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // INSERT QUERY
     public void insertPlayer(int tmid, String pos) {
         try {
             String query = "INSERT INTO Player VALUES (?,?)";
@@ -476,6 +477,7 @@ public class DatabaseConnectionHandler {
         }
     }
 
+    // AGGREGATION WITH GROUP BY QUERY
     public int getTotalSalaryForTeam(int teamId) {
         int totalSalary = 0;
 

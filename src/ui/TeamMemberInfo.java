@@ -91,6 +91,11 @@ public class TeamMemberInfo extends JFrame {
         });
 
         setVisible(true);
+
+        if (teams.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Failed to load team members!");
+            this.dispose();
+        }
     }
 
     private void openAddPlayerDialog(DatabaseConnectionHandler dbhHandler) {

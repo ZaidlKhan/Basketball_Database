@@ -113,6 +113,7 @@ public class MainMenu extends JFrame {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dbHandler.close();
                 System.exit(0);
             }
         });
@@ -120,8 +121,10 @@ public class MainMenu extends JFrame {
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 dbHandler.executeSQLScript();
+                JOptionPane.showMessageDialog(getParent(), "Successfully dropped and reloaded all tables!");
+                dispose();
+                new MainMenu(dbHandler);
             }
         });
 

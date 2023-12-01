@@ -34,20 +34,23 @@ public class SeasonInfo extends JFrame {
         List<Season> seasons = dbHandler.getAllSeasons();
         List<String> years = new ArrayList<>();
 
-        if(seasons.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Failed to load seasons!");
-            dispose();
-        }
-
         for (Season season : seasons) {
             years.add(String.valueOf(season.getYear()));
         }
-
-        JButton button1 = new JButton(years.get(0));
-        JButton button2 = new JButton(years.get(1));
-        JButton button3 = new JButton(years.get(2));
-        JButton button4 = new JButton(years.get(3));
-        JButton button5 = new JButton(years.get(4));
+        JButton button1, button2, button3, button4, button5;
+        if (years.isEmpty()) {
+            button1 = new JButton("Null");
+            button2 = new JButton("Null");
+            button3 = new JButton("Null");
+            button4 = new JButton("Null");
+            button5 = new JButton("Null");
+        } else {
+            button1 = new JButton(years.get(0).trim());
+            button2 = new JButton(years.get(1).trim());
+            button3 = new JButton(years.get(2).trim());
+            button4 = new JButton(years.get(3).trim());
+            button5 = new JButton(years.get(4).trim());
+        }
 
         button1.setBounds(70, 130, buttonWidth, buttonHeight);
         button2.setBounds(230, 130, buttonWidth, buttonHeight);
@@ -93,7 +96,7 @@ public class SeasonInfo extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seasons != null) {
+                if (!seasons.isEmpty()) {
                     Season newSeason = seasons.get(0);
                     new GameInfo(newSeason,dbHandler);
                 }
@@ -103,7 +106,7 @@ public class SeasonInfo extends JFrame {
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seasons != null) {
+                if (!seasons.isEmpty()) {
                     Season newSeason = seasons.get(1);
                     new GameInfo(newSeason,dbHandler);
                 }
@@ -113,7 +116,7 @@ public class SeasonInfo extends JFrame {
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seasons != null) {
+                if (!seasons.isEmpty()) {
                     Season newSeason = seasons.get(2);
                     new GameInfo(newSeason,dbHandler);
                 }
@@ -123,7 +126,7 @@ public class SeasonInfo extends JFrame {
         button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seasons != null) {
+                if (!seasons.isEmpty()) {
                     Season newSeason = seasons.get(3);
                     new GameInfo(newSeason,dbHandler);
                 }
@@ -133,13 +136,19 @@ public class SeasonInfo extends JFrame {
         button5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (seasons != null) {
+                if (!seasons.isEmpty()) {
                     Season newSeason = seasons.get(4);
                     new GameInfo(newSeason,dbHandler);
                 }
             }
         });
         setVisible(true);
+
+        if (seasons.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Failed to load seasons!");
+            this.dispose();
+        }
+
 
 
     }

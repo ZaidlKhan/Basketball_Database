@@ -15,6 +15,8 @@ public class TeamInfo extends JFrame {
     private JLabel titleLabel;
 
     public TeamInfo(DatabaseConnectionHandler dbHandler) {
+
+
         setTitle("Team Information");
         setSize(600, 400);
         setLayout(null);
@@ -32,17 +34,24 @@ public class TeamInfo extends JFrame {
         int buttonWidth = 140;
         int buttonHeight = 80;
 
+        JButton button1, button2, button3, button4, button5;
         List<Team> teams = dbHandler.getAllTeams();
+
         if (teams.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Failed to load teams!");
-            dispose();
+            button1 = new JButton("Null");
+            button2 = new JButton("Null");
+            button3 = new JButton("Null");
+            button4 = new JButton("Null");
+            button5 = new JButton("Null");
+        } else {
+            button1 = new JButton(teams.get(0).getName().trim());
+            button2 = new JButton(teams.get(1).getName().trim());
+            button3 = new JButton(teams.get(2).getName().trim());
+            button4 = new JButton(teams.get(3).getName().trim());
+            button5 = new JButton(teams.get(4).getName().trim());
         }
 
-        JButton button1 = new JButton(teams.get(0).getName().trim());
-        JButton button2 = new JButton(teams.get(1).getName().trim());
-        JButton button3 = new JButton(teams.get(2).getName().trim());
-        JButton button4 = new JButton(teams.get(3).getName().trim());
-        JButton button5 = new JButton(teams.get(4).getName().trim());
+
 
         Font buttonFont = button1.getFont();
         button1.setFont(new Font(buttonFont.getName(), Font.BOLD, 17));
@@ -88,7 +97,7 @@ public class TeamInfo extends JFrame {
         button1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (teams != null) {
+                if (!teams.isEmpty()) {
                     new TeamInfoWindow(teams.get(0),dbHandler);
                 }
             }
@@ -97,7 +106,7 @@ public class TeamInfo extends JFrame {
         button2.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (teams != null) {
+                if (!teams.isEmpty()) {
                     new TeamInfoWindow(teams.get(1),dbHandler);
                 }
             }
@@ -106,7 +115,7 @@ public class TeamInfo extends JFrame {
         button3.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (teams != null) {
+                if (!teams.isEmpty()) {
                     new TeamInfoWindow(teams.get(2),dbHandler);
                 }
             }
@@ -115,7 +124,7 @@ public class TeamInfo extends JFrame {
         button4.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (teams != null) {
+                if (!teams.isEmpty()) {
                     new TeamInfoWindow(teams.get(3),dbHandler);
                 }
             }
@@ -124,12 +133,21 @@ public class TeamInfo extends JFrame {
         button5.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (teams != null) {
+                if (!teams.isEmpty()) {
                     new TeamInfoWindow(teams.get(4),dbHandler);
                 }
             }
         });
+
+
         setVisible(true);
+
+        if (teams.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Failed to load teams!");
+            this.dispose();
+        }
+
+
     }
 
     private void updateTitleSize(int newSize) {
